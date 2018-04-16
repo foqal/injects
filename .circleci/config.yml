@@ -56,7 +56,7 @@ jobs:
 
 workflows:
     version: 2
-    build-n-deploy:
+    build-and-deploy:
         jobs:
             - build:
                 filters:
@@ -67,6 +67,6 @@ workflows:
                     - build
                 filters:
                     tags:
-                        only: /^v.*/
+                        only: /.*/
                     branches:
                         ignore: /.*/
