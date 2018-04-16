@@ -8,7 +8,7 @@ const newPackage = {};
     newPackage[key] = oldPackage[key];
 });
 
-const split = newPackage.version.split(/\./g);
-newPackage.version = `${split[0]}.${split[1]}.${(process.env.CIRCLE_BUILD_NUM || split[2])}`;
+//const split = newPackage.version.split(/\./g);
+//newPackage.version = `${split[0]}.${split[1]}.${(process.env.CIRCLE_BUILD_NUM || split[2])}`;
 
 fs.writeFileSync(path.resolve(__dirname, "../build/native-injects/package.json"), JSON.stringify(newPackage, 0, 4));
