@@ -6,13 +6,8 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:7.10
 
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
@@ -33,5 +28,15 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: npm test
+      - run: npm build
+
+      - store_test_results:
+          path: build/test-results
+
+      - store_artifacts:
+          path: build/injects
+          prefix: build
+
+      - store_artifacts:
+          path: build/docs
+          prefix: docs
