@@ -28,7 +28,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: npm build
+      - run: npm run build
 
       - store_test_results:
           path: build/test-results
