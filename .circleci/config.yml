@@ -34,7 +34,7 @@ jobs:
           path: build/test-results
 
       - store_artifacts:
-          path: build/injects
+          path: build/native-injects
           prefix: build
 
       - store_artifacts:
