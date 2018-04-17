@@ -242,7 +242,7 @@ const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);
 
 
 
-#License
+# License
 ISC License (ISC)
 Copyright 2018 Foqal inc
 
