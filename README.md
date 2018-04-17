@@ -18,7 +18,9 @@ import 'native-injects';
 
 # Methods
 
-## Iterators
+## Array Methods
+
+### Iterators
 
 #### toIdMap()
 Converts a list to an object keyed by a given id.
@@ -56,15 +58,6 @@ console.log(list.toIndexList());
 // [1, 2, 3, 4, 5, 6]
 ```
 
-#### toIndexList()
-Creates a list of incrementing values the same size as the original list
-```Javascript
-const list = ["a", "b", "c", "e", "a", "z"]
-console.log(list.toIndexList()); 
-// [1, 2, 3, 4, 5, 6]
-```
-
-
 #### dedupe()
 Removes duplicates from the original list
 ```Javascript
@@ -92,4 +85,158 @@ console.log(list.dedupe(extractor, combiner));
 // ]
 ```
 
-...and many more. Will add more in time. :D
+#### flatten()
+Flattens a list of lists into 1 dimension.
+```Javascript
+const list = [[1,2], [3,4]]
+console.log(list.flatten()); 
+// [1, 2, 3, 4]
+```
+
+#### flatMap()
+Takes an array, applies a map operation to it and combines the returning array of arrays into a flattened array.
+
+#### forEachReturned()
+Calls a handler on each item in the list and returns the list of items. This is like the forEach method, but this one returns the original list.
+
+#### offsetForEach()
+
+
+#### filterMap()
+
+
+#### offsetMap()
+Performs a map operation for a subset of the list starting with the given "start" index and continuing for the given length. Returns the processed sublist.
+
+#### limit()
+Takes the first items from the list based on the count provided.
+
+#### last()
+Takes the last items from the list based on the count provided
+
+#### skip()
+Skips the given number of elemens and returns the rest of the list.
+
+#### findRight()
+Finds the first element from the right given a specific predicate.
+
+#### findIndexRight()
+Finds the first element's index from the right given a specific predicate.
+
+#### union()
+Returns a list of items that appear in both this list and the passed in list.
+
+#### exclude()
+Retuns the list of items that are not in the passed in list.
+
+#### copy()
+Creates a shallow copy of this array. If an extractor is provided, will only returned the extracted items. (Performs a basic map operation).
+
+#### findComparing()
+
+#### findIndexComparing()
+
+#### findValueComparing()
+
+
+### Math
+Standard list math operations
+
+#### max()
+Returns the largest item in the list.
+```Javascript
+[1,2,3,4,5].max(); //returns 5
+
+//Can provide a custom comparer which will see which object is bigger left or right.
+[{v: 1}, {v: 2}, {v: 3}].max((a, b) => a.v > b.v); // returns {v: 3}
+
+//Can provide a handler to extract the value that gets compared
+[{v: 1}, {v: 2}, {v: 3}].max(null, obj => obj.v); //returns {v: 3}
+
+```
+
+#### maxValue()
+
+#### min()
+
+#### minValue()
+
+#### count()
+
+#### sum()
+
+#### product()
+
+#### average()
+
+#### median()
+
+#### variance()
+
+#### permutations()
+Returns all permutations of a given size.
+
+#### combinations()
+Creates all combinations of a given size from the current list of items.
+
+### Diffs
+Standard functions to help calculate differences and splits.
+
+#### split()
+Takes a list and creates sub-lists where the max size is no greater than splitSize.
+```Javascript
+[1,2,3,4,5].split(2) // returns [[1, 2], [3, 4], [5]]
+```
+
+#### switches()
+Counts the number of times that two consecutive values are not equal.
+```Javascript
+//Switches once from null to 1, once from 1 to 2, and once from 2 to 3.
+[1, 1, 2, 2, 2, 2, 3, 3].switches((a, b) => a == b); // returns 3
+```
+
+#### countDiffs()
+Counts the number of differences between the current list and a given second list.
+```Javascript
+//
+[1, 1, 2, 3].coundDiffs([1, 2, 3]); // returns 2
+```
+
+## Promises
+#### mapConcurrent()
+Process each item in the list and assumes that the given handler is a promise.
+Will resolve all promises once all sub-promises are also resolved. If an error
+occurs the entire list will throw.
+
+Can also operate in one of two ways. If given a concurrency value (by default 10)
+will only run that number of promises at once. Once one of those promises completes,
+the handler will start the next promise until all are completed. For example, if reading
+a list of files, you may only want to read 5 files at a time even if you have a list of 100.
+Once a file is done reading, the next one in the list of 100 will start processing.
+
+If the concurrency value is -1, will start all sub-promises at the same time.
+
+```Javascript
+const listIndexes = new Array(100).fill(1).toIndexList(); //creates an array from 0 to 99.
+const data = await listIndexes.mapConcurrent(async fileIndex => await fetch(url + fileIndex));
+// Data will complete once all the fetch operations are complete for the 100 urls. Because the default
+// concurrency parameter is 10, will only fetch 10 items at a time instead of getting all 100 at once.
+```
+
+#### mapPromise()
+
+#### forEachConcurrent()
+
+#### forEachPromise()
+
+
+## String Methods
+
+#### extractSymbolsWithRegExp()
+Uses a RegExp to find matches in a string and returns those as a list of symbols. Additionally returns a 
+new text value which is the text after removing the symbols.
+```Javascript
+const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);
+```
+
+
