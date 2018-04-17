@@ -12,10 +12,11 @@
         "lint": "esw src tools",
         "lint:watch": "npm run lint -- --watch",
         "clean": "rm -rf build",
-        "prebuild": "npm run clean && mkdir -p build && npm-run-all --parallel test lint docs",
+        "prebuild": "npm run clean && mkdir -p build/native-injects && npm-run-all --parallel test lint docs",
         "build:app": "babel src -d build/native-injects/src",
-        "build": "npm-run-all --parallel build:app build:package",
-        "build:package": "babel-node ./tools/create-package.js"
+        "build": "npm-run-all --parallel build:app build:package build:copy-files",
+        "build:package": "babel-node ./tools/create-package.js",
+        "build:copy-files": "cp README.md LICENSE.md build/native-injects"
     },
     "author": "Vlad Shlosberg",
     "license": "ISC",
@@ -29,8 +30,8 @@
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0-beta.44",
-        "@babel/node": "^7.0.0-beta.44",
         "@babel/core": "^7.0.0-beta.44",
+        "@babel/node": "^7.0.0-beta.44",
         "@babel/polyfill": "^7.0.0-beta.44",
         "@babel/preset-env": "^7.0.0-beta.44",
         "@babel/register": "^7.0.0-beta.44",
@@ -44,7 +45,7 @@
         "mocha": "^5.1.0",
         "mocha-junit-reporter": "^1.16.0",
         "mocha-multi-reporters": "^1.1.7",
-        "npm-run-all": "^4.1.2",
-        "nodemon": "^1.14.7"
+        "nodemon": "^1.14.7",
+        "npm-run-all": "^4.1.2"
     }
 }
