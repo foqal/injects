@@ -12,31 +12,41 @@ if (!Array.prototype.isEmpty) {
 }
 
 
-function createValueAssigner(value) {
+/**
+ * Given a value, will return a function. This function, when passed an object, will extract the value.
+ * @method createValueAssigner
+ * @param  {String|Function} key            If the key is a string, this key string will be used to extract the key from the object.
+ *                                          If the key is a function, will simply return that function.
+ *                                          If no value present, will return whatever is the defaultValue parameter.
+ * @param  {Object}          defaultValue   The default to use when value is null.
+ * @return {Function}       A function which extracts a field from a given object.
+ */
+function createValueAssigner(value, defaultValue=IDENTITY) {
     if (!value) {
-        return IDENTITY;
+        value = defaultValue;
     }
-    else if (typeof value == "string") {
+
+    if (typeof value === "string") {
         return item => item[value];
     }
     return value;
 }
+
 
 // Creates an array of items into a map keyed my id
 //
 // `[{id, name}]` to `{id: {id, name}}`
 // @method createIdMap
 // @param {Object[]}        this    The list of items to convert.
-// @param {String}          key     The name of the id field to fetch and aggregate by.
+// @param {String|Func}     key     The name of the id field to fetch from or a function
+//                                  to extract the key from the current item.
 // @param {String|Func}     value   The optional field or function to extract as the value of the map.
 // @returns {Object}                The map keyed by id.
-Array.prototype.toIdMap = function(key, value=null) {
-    if (!key) {
-        key = "id";
-    }
+Array.prototype.toIdMap = function(key="id", value=null) {
+    const keyFetcher = createValueAssigner(key, "id");
     const assigner = createValueAssigner(value);
     return this.reduce((aggregator, item, index) => {
-        const itemKey = item[key];
+        const itemKey = keyFetcher(item, index);
         const current =  aggregator[itemKey];
         aggregator[itemKey] = assigner(item, current, index);
         return aggregator;
@@ -51,11 +61,8 @@ Array.prototype.toIdMap = function(key, value=null) {
 // @param {String}      key     The name of the id field to fetch for each item.
 // @returns {Object[]}          The list of ids.
 Array.prototype.toIdList = function(key) {
-    if (!key) {
-        key = "id";
-    }
-
-    return this.map(item => item[key]);
+    const keyFetcher = createValueAssigner(key, "id");
+    return this.map((item, index) => keyFetcher(item, index));
 };
 
 // Creates an array of the indexes of items in the list.
@@ -115,7 +122,6 @@ Array.prototype.flatten = function() {
 
 
 
-// Flattens a list of arrays into a single array.
 // Takes an array, applies a map operation to it and combines the returning
 // array of arrays into a single array.
 //
