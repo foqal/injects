@@ -18,6 +18,39 @@ import 'native-injects';
 
 # Methods
 
+## Array Properties
+
+#### isEmpty
+Returns true if the list is empty, else false.
+```Javascript
+console.log([].isEmpty);
+// true
+
+console.log([1, 2, 3].isEmpty);
+// false
+```
+
+#### firstElement
+Returns the first element in the array or null if empty.
+```Javascript
+console.log([].firstElement);
+// null
+
+console.log([1, 2, 3].firstElement);
+// 1
+```
+
+
+#### lastElement
+Returns the first element in the array or null if empty.
+```Javascript
+console.log([].lastElement);
+// null
+
+console.log([1, 2, 3].lastElement);
+// 3
+```
+
 ## Array Methods
 
 ### Iterators
@@ -29,7 +62,7 @@ const list = [
     {id: 1, value: "Hello"},
     {id: 2, value: "World"}
 ]
-console.log(list.toIdMap("id")); //"id" is the optional since its the default. 
+console.log(list.toIdMap("id")); //"id" is the optional since its the default.
 // {
 //   1: { id: 1, value: "Hello"},
 //   2: { id: 2, value: "World"}
@@ -45,7 +78,7 @@ const list = [
     {id: 2, value: "World"}
 ]
 console.log(list.toIdList("id")); //"id" is the optional since its the default.
-//Prints 
+//Prints
 // [1, 2]
 ```
 
@@ -54,7 +87,7 @@ console.log(list.toIdList("id")); //"id" is the optional since its the default.
 Creates a list of incrementing values the same size as the original list
 ```Javascript
 const list = ["a", "b", "c", "e", "a", "z"]
-console.log(list.toIndexList()); 
+console.log(list.toIndexList());
 // [1, 2, 3, 4, 5, 6]
 ```
 
@@ -62,26 +95,26 @@ console.log(list.toIndexList());
 Removes duplicates from the original list
 ```Javascript
 const list = [1, 1, 2, 3, 1]
-console.log(list.dedupe()); 
+console.log(list.dedupe());
 // [1, 2, 3]
 ```
 Can work on objects if a handler is provided.
 ```Javascript
 const list = [{id: 1}, {id: 2}, {id: 3}, {id: 1}, {id: 1}]
-console.log(list.dedupe(o => o.id)); 
+console.log(list.dedupe(o => o.id));
 // [{id: 1}, {id: 2}, {id: 3}]
 ```
 Can override which object is kept with the second pararmeter.
 ```Javascript
 const list = [
-    {id: 1, v: 10.0}, 
+    {id: 1, v: 10.0},
     {id: 1, v: 20.0}
 ]
 const extractor = o => i.id;
 const combiner = (a, b) => a.v > b.v ? a : b;
-console.log(list.dedupe(extractor, combiner)); 
+console.log(list.dedupe(extractor, combiner));
 // [
-//    {id: 1, v: 10} 
+//    {id: 1, v: 10}
 // ]
 ```
 
@@ -89,7 +122,7 @@ console.log(list.dedupe(extractor, combiner));
 Flattens a list of lists into 1 dimension.
 ```Javascript
 const list = [[1,2], [3,4]]
-console.log(list.flatten()); 
+console.log(list.flatten());
 // [1, 2, 3, 4]
 ```
 
@@ -233,7 +266,7 @@ const data = await listIndexes.mapConcurrent(async fileIndex => await fetch(url 
 ## String Methods
 
 #### extractSymbolsWithRegExp()
-Uses a RegExp to find matches in a string and returns those as a list of symbols. Additionally returns a 
+Uses a RegExp to find matches in a string and returns those as a list of symbols. Additionally returns a
 new text value which is the text after removing the symbols.
 ```Javascript
 const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);

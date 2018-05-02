@@ -17,7 +17,7 @@ Array.prototype.split = function (splitSize) {
         return [];
     }
     return this.reduce((list, current) => {
-        let lastSplit = list[list.length - 1];
+        let lastSplit = list.lastElement;
         if (lastSplit == null || lastSplit.length == splitSize) {
             lastSplit = [];
             list.push(lastSplit);

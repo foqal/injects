@@ -1,15 +1,5 @@
-import {IDENTITY, IDENTITY_TRUE, IDENTITY_NOT_NULL} from './identity';
+import {IDENTITY, IDENTITY_NOT_NULL} from './identity';
 
-
-if (!Array.prototype.isEmpty) {
-    Object.defineProperty(Array.prototype, 'isEmpty', {
-        enumerable: false,
-        configurable: false,
-        get: function () {
-            return !this.some(IDENTITY_TRUE);
-        }
-    });
-}
 
 
 /**
@@ -50,7 +40,7 @@ Array.prototype.toIdMap = function(key="id", value=null) {
         const current =  aggregator[itemKey];
         aggregator[itemKey] = assigner(item, current, index);
         return aggregator;
-    }, {});
+    }, Object.create(null));
 };
 
 // Creates an array of ids fetched from each item in the list.
@@ -330,7 +320,7 @@ Array.prototype.findComparing = function (comparer, extractor) {
         extractor = IDENTITY;
     }
 
-    let value = this[0];
+    let value = this.firstElement;
     let extracted = extractor(value);
     this.offsetForEach(1, null, (item, index) => {
         const current = extractor(item);

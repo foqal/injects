@@ -1,3 +1,4 @@
+import './array-properties';
 import './array-iterators';
 import './array-math';
 import './array-promise';
