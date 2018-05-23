@@ -1,4 +1,4 @@
-import {IDENTITY, IDENTITY_NOT_NULL} from './identity';
+import {IDENTITY} from './identity';
 
 
 
@@ -151,21 +151,47 @@ Array.prototype.offsetForEach = function(start, length, handler) {
 };
 
 
-// Calls a handler on each item in the list if the item matches the filter.
-// By default, filters out nulls.
+// Combines the filter and map operation into a single iteration. First tests the filter. If the filter
+// matches, then calls map and returns the list of the mapped results.
+//
+// If no filter present, will filter out items which are not falsy.
 //
 // @method filterMap
-// @param {Object[]} this The list to manipulate.
-// @param {Func} handler The method to apply to each item in the list.
-// @param {Func} filter The optional method to check. Default checks for null item.
+// @param {Object[]}    this        The list to manipulate.
+// @param {Func}        handler     The method to apply to each item in the list.
+// @param {Func}        filter      The optional method to check. Default checks for null item.
 // @return {Object[]} The mapped list.
 Array.prototype.filterMap = function(handler, filter) {
-    filter = filter || IDENTITY_NOT_NULL;
     handler = handler || IDENTITY;
+    filter = filter || IDENTITY;
 
     return this.reduce((list, item, index) => {
         if (filter(item, index)) {
             list.push(handler(item, index));
+        }
+        return list;
+    }, []);
+};
+
+
+// Combines the filter and map operation into a single iteration. First it calls map on an item.
+// Next if the resulting item matches the filter, it is added to the resulting list.
+//
+// If no filter present, will filter out items which are not falsy.
+//
+// @method mapFilter
+// @param {Object[]}    this        The list to iterate
+// @param {Func}        handler     The method to apply to each item in the list.
+// @param {Func}        filter      The optional method to check. Default checks for null item.
+// @return {Object[]} The mapped list.
+Array.prototype.mapFilter = function(handler, filter) {
+    handler = handler || IDENTITY;
+    filter = filter || IDENTITY;
+
+    return this.reduce((list, item, index) => {
+        const value = handler(item, index);
+        if (filter(value, index)) {
+            list.push(value);
         }
         return list;
     }, []);

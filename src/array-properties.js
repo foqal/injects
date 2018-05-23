@@ -1,6 +1,6 @@
 import {IDENTITY_TRUE} from './identity';
 
-if (!Array.prototype.isEmpty) {
+if (!Array.prototype.hasOwnProperty("isEmpty")) {
     Object.defineProperty(Array.prototype, 'isEmpty', {
         enumerable: false,
         configurable: false,
@@ -10,7 +10,7 @@ if (!Array.prototype.isEmpty) {
     });
 }
 
-if (!Array.prototype.firstElement) {
+if (!Array.prototype.hasOwnProperty("firstElement")) {
     Object.defineProperty(Array.prototype, 'firstElement', {
         enumerable: false,
         configurable: false,
@@ -23,7 +23,7 @@ if (!Array.prototype.firstElement) {
     });
 }
 
-if (!Array.prototype.lastElement) {
+if (!Array.prototype.hasOwnProperty("lastElement")) {
     Object.defineProperty(Array.prototype, 'lastElement', {
         enumerable: false,
         configurable: false,

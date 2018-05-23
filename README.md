@@ -42,7 +42,7 @@ console.log([1, 2, 3].firstElement);
 
 
 #### lastElement
-Returns the first element in the array or null if empty.
+Returns the last element in the array or null if empty.
 ```Javascript
 console.log([].lastElement);
 // null
@@ -136,6 +136,46 @@ Calls a handler on each item in the list and returns the list of items. This is 
 
 
 #### filterMap()
+Combines the filter and map operation into a single iteration. First tests the filter. If the filter
+matches, then calls map and returns the list of the mapped results.
+```Javascript
+const list = [0, 1, 2, 3, 4];
+const mapper = (value, index) => value * index;
+const filter = value => value != 3;
+console.log(list.filterMap(mapper, filter));
+// [0, 1, 4, 16]
+```
+
+If no filter present, will filter out items which are not falsy.
+```Javascript
+const list = [0, 1, 2, null, 3, 4, false];
+const mapper = (value, index) => value * index;
+console.log(list.filterMap(mapper, null));
+// Since 0, null, and false are falsy, will be filtered out.
+// [1, 4, 12, 20]
+```
+
+
+#### mapFilter()
+Combines the filter and map operation into a single iteration. First it calls map on an item.
+Next if the resulting item matches the filter, it is added to the resulting list.
+```Javascript
+const list = ['a', 'b', 'c', 'd']
+const mapper = (value, index) => value + index;
+const filter = value => value != 'b1';
+console.log(list.mapFilter(mapper, filter));
+// ['a0', 'c2', 'd3']
+```
+
+If no filter present, will filter out items which are not falsy.
+```Javascript
+const list = [0, 1, 2, 3];
+console.log(list.mapFilter(() => null, null));
+// Since each item maps to null which is falsy, will return an empty list.
+// []
+```
+
+
 
 
 #### offsetMap()

@@ -24,4 +24,19 @@ describe('lastElement', () => {
         assert.equal(3, [1, 2, 3].lastElement);
     });
 
+    it('not caching on add', () => {
+        const array = [1, 2, 3];
+        assert.equal(3, array.lastElement);
+        array.push("a");
+        //handler, filter
+        assert.equal("a", array.lastElement);
+    });
+
+    it('not caching on remove', () => {
+        const array = [1, 2, 3];
+        assert.equal(3, array.lastElement);
+        array.pop();
+        //handler, filter
+        assert.equal(2, array.lastElement);
+    });
 });
