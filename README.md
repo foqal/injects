@@ -312,6 +312,33 @@ new text value which is the text after removing the symbols.
 const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);
 ```
 
+#### createBlurb()
+Returns a shorter version of the string trying to cut the length at new line and space characters.
+```Javascript
+const blurb = "hello world\nhow are you".createBlurb(13);
+// "hello world..."
+```
+By default, it will make the string as long as the first newline character. However if a second parameter 
+"minBlurb" is provided, will return a string including new lines.
+```Javascript
+const blurb = "hello world\nhow are you\nI am good".createBlurb(30, 25);
+// "hello world\nhow are you..."
+```
+
+
+
+#### createBlurbSingleLine()
+Returns a shorter version of the string trying to cut the length at space characters. 
+
+If the character before and after the newline is a regular word character, will replace the newline with a 
+period and capitalize the next character.
+```Javascript
+const blurb = "hello world\nhow are you\nI am good".createBlurbSingleLine(25)`
+// "hello world. How are you..."
+```
+
+
+
 
 
 
