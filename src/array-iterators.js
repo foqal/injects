@@ -242,7 +242,7 @@ Array.prototype.limit = function(count) {
 // @param {Integer}        count   The number of items to return
 // @return {Object[]}              The subset list.
 Array.prototype.last = function(count) {
-    return this.slice(this.length - count);
+    return this.slice(Math.max(0, this.length - count));
 };
 
 // Skips the given number of elemens and returns the rest of the list.

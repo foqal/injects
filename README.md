@@ -183,9 +183,17 @@ Performs a map operation for a subset of the list starting with the given "start
 
 #### limit()
 Takes the first items from the list based on the count provided.
+```Javascript
+console.log([1, 2, 3, 4, 5].last(3));
+// [1, 2, 3]
+```
 
 #### last()
 Takes the last items from the list based on the count provided
+```Javascript
+console.log([1, 2, 3, 4, 5].last(3));
+// [3, 4, 5]
+```
 
 #### skip()
 Skips the given number of elemens and returns the rest of the list.
@@ -315,13 +323,13 @@ const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);
 #### createBlurb()
 Returns a shorter version of the string trying to cut the length at new line and space characters.
 ```Javascript
-const blurb = "hello world\nhow are you".createBlurb(13);
+"hello world\nhow are you".createBlurb(13);
 // "hello world..."
 ```
 By default, it will make the string as long as the first newline character. However if a second parameter 
 "minBlurb" is provided, will return a string including new lines.
 ```Javascript
-const blurb = "hello world\nhow are you\nI am good".createBlurb(30, 25);
+"hello world\nhow are you\nI am good".createBlurb(30, 25);
 // "hello world\nhow are you..."
 ```
 
@@ -333,11 +341,9 @@ Returns a shorter version of the string trying to cut the length at space charac
 If the character before and after the newline is a regular word character, will replace the newline with a 
 period and capitalize the next character.
 ```Javascript
-const blurb = "hello world\nhow are you\nI am good".createBlurbSingleLine(25)`
+"hello world\nhow are you\nI am good".createBlurbSingleLine(25)`
 // "hello world. How are you..."
 ```
-
-
 
 
 
