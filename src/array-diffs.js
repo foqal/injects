@@ -93,3 +93,78 @@ Array.prototype.countDiffs = function(other, compare) {
 
     return switches;
 };
+
+/**
+ * Takes an array and returns where the current array and given array are different.
+ * isEqual Handler parameters
+ *  * leftValue - The value in the current list.
+ *  * rightValue - The value in the right list.
+ *  * leftIndex - The index in the current list.
+ *  * rightIndex - The index in the right list.
+ *
+ * @method diff
+ * @param  {Array}    right         The second list to diff against
+ * @param  {Function} isEqual       The handler which takes the values and should return if they are equal or not.
+ * @param  {Number}   maxLookahead  The maximum number of items to look for a equal line if the rows don't match.
+ * @return {Number}                 Returns the list of differences.
+ */
+Array.prototype.diff = function(right, isEqual, maxLookahead=10) {
+    if (!isEqual) {
+        isEqual = (a, b) => a == b;
+    }
+    const left = this;
+    const diffs = [];
+
+    function tryFindSame(compare, start, list) {
+        const end = Math.min(list.length, start + maxLookahead);
+        for (let i = start; i < end; i++) {
+            if (compare(i, list[i])) {
+                return i;
+            }
+        }
+    }
+
+    function addEach(start, newStart, list, adder) {
+        list.offsetForEach(start, newStart, (value, index) => {
+            diffs.push(adder(value, index));
+        });
+    }
+
+    let leftIndex = 0;
+    let rightIndex = 0;
+    while (leftIndex < left.length || rightIndex < right.length) {
+        const leftValue = left[leftIndex] || null;
+        const rightValue = right[rightIndex] || null;
+        if (isEqual(leftValue, rightValue, leftIndex, rightIndex)) {
+            leftIndex = leftIndex < left.length ? leftIndex + 1 : leftIndex;
+            rightIndex = rightIndex < right.length ? rightIndex + 1 : rightIndex;
+        } else {
+            const newLeft = tryFindSame((index, value) => isEqual(value, rightValue, index, rightIndex), leftIndex + 1, left);
+            if (newLeft) {
+
+                addEach(leftIndex, newLeft, left, (value, index) => [value, null, index, null]);
+                leftIndex = newLeft;
+            }
+            else {
+                const newRight = tryFindSame((index, value) => isEqual(leftValue, value, leftIndex, index), rightIndex + 1, right);
+
+                if (newRight) {
+                    addEach(rightIndex, newRight, right, (value, index) => [null, value, null, index]);
+                    rightIndex = newRight;
+                } else {
+                    diffs.push([
+                        leftValue,
+                        rightValue,
+                        leftIndex < left.length ? leftIndex : null,
+                        rightIndex < right.length ? rightIndex : null,
+                    ]);
+
+                    leftIndex = leftIndex < left.length ? leftIndex + 1 : leftIndex;
+                    rightIndex = rightIndex < right.length ? rightIndex + 1 : rightIndex;
+                }
+            }
+        }
+    }
+    return diffs;
+};
+

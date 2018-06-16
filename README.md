@@ -283,6 +283,24 @@ Counts the number of differences between the current list and a given second lis
 [1, 1, 2, 3].coundDiffs([1, 2, 3]); // returns 2
 ```
 
+#### diff()
+Takes an array and returns where the current array and given array are different.
+```Javascript
+['a', 'b', 'c', 'd'].diff(['a', 'b', 'c']) 
+// returns  
+// [
+//    ['d', null, 3, null]
+// ]
+```
+Takes a handler to do custom comparisons
+```Javascript
+[{v: 'a'}, {v: 'b'}, {v: 'c'}, {v: 'd'}].diff(['a', 'b', 'c', 'e'], (left, right) => left.v == right) 
+// returns  
+// [
+//    [{v: 'd'}, 'e', 3, 3]
+// ]
+```
+
 ## Promises
 #### mapConcurrent()
 Process each item in the list and assumes that the given handler is a promise.
