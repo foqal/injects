@@ -263,6 +263,56 @@ Creates all combinations of a given size from the current list of items.
 ### Diffs
 Standard functions to help calculate differences and splits.
 
+#### diff()
+Takes an array and returns where the current array and given array are different. The return format is an array of arrays:
+```
+[
+    [ //Diff 1
+        "value1",    //thisValue    The value in this array.
+        "value2",    //rightValue   The value in the right array.
+        0,           //thisIndex    The index in this array.
+        1,           //rightIndex   The index in the right array.
+    ]
+]
+```
+If a value exists in this array, but not in the presented array, rightValue and rightIndex will be null. If a value exists in the right array but not in the current array, thisValue and thisIndex will be null.
+ 
+**For example:**
+```Javascript
+['1', 'a', 'b', 'c', 'd'].diff(['2', 'a', 'b', 'c']) 
+// returns  
+// [
+//    ['1', '2', 0, 0]
+//    ['d', null, 4, null]
+// ]
+```
+You can also pass in a handler to do custom comparisons. The parameters of the handler are:
+ * thisValue - The value in this array.
+ * rightValue - The value in the right array.
+ * thisIndex - The index in this list.
+ * rightIndex - The index in the right array.
+ 
+**For example:**
+```Javascript
+[{v: 'a'}, {v: 'b'}, {v: 'c'}, {v: 'd'}].diff(['a', 'b', 'c', 'e'], (left, right) => left.v == right) 
+// returns  
+// [
+//    [{v: 'd'}, 'e', 3, 3]
+// ]
+```
+
+Finally, you can pass in a max lookahead value. This will tell how far forward to look for similarities before assuming that all values in the list are different.
+ 
+**For example:**
+```Javascript
+['a', 'b', 'c', '1', '2', '3', 'd', 'e'].diff(['a', 'b', 'c', 'd', 'e'], null, 5);
+// Will find that '1', '2', and '3' are in the left but not in the right.
+
+['a', 'b', 'c', '1', '2', '3', 'd', 'e'].diff(['a', 'b', 'c', 'd', 'e'], null, 1);
+// Will assume that '1', '2', '3' where replaced with 'c', 'd', 'e' respectively and then, 
+// 'd' and 'e' were added to the left list.
+```
+
 #### split()
 Takes a list and creates sub-lists where the max size is no greater than splitSize.
 ```Javascript
@@ -283,23 +333,6 @@ Counts the number of differences between the current list and a given second lis
 [1, 1, 2, 3].coundDiffs([1, 2, 3]); // returns 2
 ```
 
-#### diff()
-Takes an array and returns where the current array and given array are different.
-```Javascript
-['a', 'b', 'c', 'd'].diff(['a', 'b', 'c']) 
-// returns  
-// [
-//    ['d', null, 3, null]
-// ]
-```
-Takes a handler to do custom comparisons
-```Javascript
-[{v: 'a'}, {v: 'b'}, {v: 'c'}, {v: 'd'}].diff(['a', 'b', 'c', 'e'], (left, right) => left.v == right) 
-// returns  
-// [
-//    [{v: 'd'}, 'e', 3, 3]
-// ]
-```
 
 ## Promises
 #### mapConcurrent()
