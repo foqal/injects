@@ -23,18 +23,19 @@ Array.prototype.minValue = function (extractor) {
 };
 
 
-// Counts the number of items that match a condition
+// Counts the number of items that match a condition. If no condition present, will count the number of items that
+// are not falsy.
 //
 // @method count
 // @param {Object[]}        this     The list to iterate
-// @param {Function}        handler  Will take the element and will count
+// @param {Function}        handler  Will take the element and index and return true if to include in the count.
 // @return {Number}                  The number of items matching the condition
 Array.prototype.count = function(handler) {
     if (!handler) {
         handler = IDENTITY;
     }
     return this.reduce((current, element, index) => {
-        return current + handler(element, index) ? 1 : 0;
+        return current + (handler(element, index) ? 1 : 0);
     }, 0);
 };
 
