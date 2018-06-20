@@ -243,6 +243,14 @@ Returns the largest item in the list.
 #### minValue()
 
 #### count()
+Counts the number of items in the list that match the given expression.
+```Javascript
+[1, 2, 3, 4].count(value => value % 2 === 0); //Returns 2
+```
+If no handler present, will by default count the number of items whos value is not falsy.
+```Javascript
+[true, false, null, undefined, 0, "", "hello"].count(); //Returns 2
+```
 
 #### sum()
 
