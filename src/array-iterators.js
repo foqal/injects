@@ -68,10 +68,11 @@ Array.prototype.toIndexList = function() {
 // Dedupes the current list using an array.
 //
 // @method dedupe
-// @param {Object[]}    this    The list of items to dedupe
+// @param {Object[]}    this        The list of items to dedupe
 // @param {Func}        extractor   The optional method to use to extract the values that will be compared.
 // @param {Func}        combiner    When a duplicate is found, this method is called to determine the resulting value to keep.
-// @return {Object[]}           The deduped subset.
+//                                  If method not provided, will keep the first value found.
+// @return {Object[]}               The de-duplicated subset.
 Array.prototype.dedupe = function(extractor, combiner) {
 
     if (!extractor) {
@@ -82,18 +83,18 @@ Array.prototype.dedupe = function(extractor, combiner) {
     }
 
     const set = Object.create(null);
-    return this.filter((item, index) => {
+    const newList = [];
+    this.forEach((item, index) => {
         const value = extractor(item);
         const previousIndex = set[value];
         if (previousIndex != null) {
-            this[previousIndex] = combiner(this[previousIndex], item);
-            return false;
+            newList[previousIndex] = combiner(this[previousIndex], item);
         } else {
+            newList.push(item);
             set[value] = index;
         }
-
-        return true;
     });
+    return newList;
 };
 
 
