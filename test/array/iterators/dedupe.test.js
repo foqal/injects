@@ -59,4 +59,48 @@ describe('dedupe', () => {
         const result = [{v: 1, a: 1}, {v: 2, a: 2}, {v:1, a: 3}].dedupe(value => value.v, (prev, current) => current);
         assert.deepEqual(result, [{v: 1, a: 3}, {v: 2, a: 2}]);
     });
+
+    it('custom assigner picks new many times', () => {
+        const result = [{v: 1, a: 1}, {v: 1, a: 2}, {v:1, a: 3}, {v:1, a: 4}].dedupe(value => value.v, (prev, current) => current);
+        assert.deepEqual(result, [{v: 1, a: 4}]);
+    });
+
+    it('custom assigner picks new many times odd', () => {
+        const result = [{v: 1, a: 1}, {v: 1, a: 2}, {v:1, a: 3}].dedupe(value => value.v, (prev, current) => current);
+        assert.deepEqual(result, [{v: 1, a: 3}]);
+    });
+
+    it('custom assigner picks old one many times', () => {
+        const result = [{v: 1, a: 1}, {v: 1, a: 2}, {v:1, a: 3}, {v:1, a: 4}].dedupe(value => value.v, prev => prev);
+        assert.deepEqual(result, [{v: 1, a: 1}]);
+    });
+
+    it('custom assigner picks old one many times - odd', () => {
+        const result = [{v: 1, a: 1}, {v: 1, a: 2}, {v:1, a: 3}].dedupe(value => value.v, prev => prev);
+        assert.deepEqual(result, [{v: 1, a: 1}]);
+    });
+
+    it('multiple sets', () => {
+        const rows = [
+            {v: 1, a: 1},
+            {v: 1, a: 2},
+            {v: 2, a: 1},
+            {v: 2, a: 2},
+        ];
+        const result = rows.dedupe(row => row.v, (current, next) => next);
+        assert.deepEqual(result, [{v: 1, a: 2}, {v: 2, a: 2}]);
+    });
+
+    it('multiple sets interlaced', () => {
+        const rows = [
+            {v: 1, a: 1},
+            {v: 1, a: 2},
+            {v: 2, a: 1},
+            {v: 2, a: 2},
+            {v: 1, a: 3},
+            {v: 2, a: 3},
+        ];
+        const result = rows.dedupe(row => row.v, (current, next) => next);
+        assert.deepEqual(result, [{v: 1, a: 3}, {v: 2, a: 3}]);
+    });
 });

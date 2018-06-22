@@ -84,14 +84,14 @@ Array.prototype.dedupe = function(extractor, combiner) {
 
     const set = Object.create(null);
     const newList = [];
-    this.forEach((item, index) => {
+    this.forEach(item => {
         const value = extractor(item);
         const previousIndex = set[value];
         if (previousIndex != null) {
             newList[previousIndex] = combiner(this[previousIndex], item);
         } else {
+            set[value] = newList.length;
             newList.push(item);
-            set[value] = index;
         }
     });
     return newList;
