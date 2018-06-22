@@ -88,7 +88,8 @@ Array.prototype.dedupe = function(extractor, combiner) {
         const value = extractor(item);
         const previousIndex = set[value];
         if (previousIndex != null) {
-            newList[previousIndex] = combiner(this[previousIndex], item);
+            newList[previousIndex] = combiner(newList[previousIndex], item);
+
         } else {
             set[value] = newList.length;
             newList.push(item);
