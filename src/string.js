@@ -15,7 +15,7 @@ String.prototype.extractSymbolsWithRegExp = function (regexp) {
 
 const IS_WHITESPACE_REGEX = /[ \n]/;
 
-
+const WHITESPACE_SET = new Set([" ", "\n", "\t"]);
 
 /**
  * Returns a shorter version of the string trying to cut the length at new line and space characters.
@@ -38,7 +38,7 @@ String.prototype.createBlurb = function (length=100, minBlurb=null) {
 
     let endBlurb = text.indexOf("\n");
     if (minBlurb) {
-        endBlurb = (minBlurb > text.length) ? text.length : text.lastIndexOf("\n", minBlurb);
+        endBlurb = (minBlurb > text.length) ? text.length : minBlurb;
     }
 
     if (endBlurb < 0 || endBlurb > length) {
@@ -46,8 +46,11 @@ String.prototype.createBlurb = function (length=100, minBlurb=null) {
     }
 
     if (endBlurb < text.length && !IS_WHITESPACE_REGEX.test(text[endBlurb])) {
-        endBlurb = text.lastIndexOf(" ", endBlurb);
+        while (endBlurb >= 0 && !WHITESPACE_SET.has(text[endBlurb])) {
+            endBlurb--;
+        }
     }
+
     let trimmed = text.substr(0, endBlurb).trim();
     if (text.length > endBlurb) {
         trimmed += trimmed[trimmed.length - 1] === "." ? ".." : "...";
