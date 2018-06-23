@@ -43,6 +43,30 @@ Array.prototype.toIdMap = function(key="id", value=null) {
     }, Object.create(null));
 };
 
+
+// Creates a map of array values based on the given key. If no key specified uses the "id" field.
+//
+// `[{id, name1}, {id, name2}]` to `{id: [{id, name1}, {id, name2}]}`
+// @name groupBy
+// @param {Object[]}        this    The list to group
+// @param {String|Func}     key     The name of the id field to fetch from or a function
+//                                  to extract the key from the current item.
+// @param {String|Func}     value   The optional field or function to extract as the value of the array of the map.
+// @returns {Object}                The map having the given key as the id and the value being an array of extracted values.
+Array.prototype.groupBy = function(key="id", value=null) {
+    const assigner = createValueAssigner(value);
+    return this.toIdMap(key, (item, current) => {
+        const value = assigner(item);
+        if (current) {
+            current.push(value);
+            return current;
+        } else {
+            return [value];
+        }
+    });
+};
+
+
 // Creates an array of ids fetched from each item in the list.
 //
 // `[{id: 1}, {id: 2}]` to `[1, 2]`

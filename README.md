@@ -56,7 +56,7 @@ console.log([1, 2, 3].lastElement);
 ### Iterators
 
 #### toIdMap()
-Converts a list to an object keyed by a given id.
+Converts a list to an object keyed by a field in each object.
 ```Javascript
 const list = [
     {id: 1, value: "Hello"},
@@ -67,7 +67,63 @@ console.log(list.toIdMap("id")); //"id" is the optional since its the default.
 //   1: { id: 1, value: "Hello"},
 //   2: { id: 2, value: "World"}
 // }
+console.log(list.toIdMap("id", "value"));
+// {
+//   1: "Hello",
+//   2: "World"
+// }
 ```
+
+Can also provide a custom key handler and value handler as functions
+```Javascript
+const list = [
+    {id: 1, value: "Hello"},
+    {id: 2, value: "World"}
+]
+console.log(list.toIdMap(row => row.id, row => row.id + ":" + row.value));
+// {
+//   1: "1:Hello",
+//   2: "2:World"
+// }
+```
+
+
+#### groupBy()
+Takes an array of items and groups by field in each item. The result is a map of key to arrays.
+```Javascript
+const list = [
+    {id: 1, value: "foo"},
+    {id: 1, value: "bar"},
+    {id: 2, value: "baz"},
+    
+]
+console.log(list.toIdMap()); //By default uses a field called "id".
+// {
+//   1: [{id: 1, value: "foo"}, {id: 1, value: "bar"}],
+//   2: [{id: 2, value: "baz"}]
+// }
+console.log(list.toIdMap("id", "value")); //Can also specify the key and/or value fields
+// {
+//   1: ["foo", "bar"],
+//   2: ["baz"]
+// }
+```
+Can also provide a custom key handler and value handler as functions
+```Javascript
+const list = [
+    {id: 1, value: "foo"},
+    {id: 1, value: "bar"},
+    {id: 2, value: "baz"},
+    
+]
+console.log(list.toIdMap(row => row.id, row => row.id + ":" + row.value));
+// {
+//   1: ["1:foo", "1:bar"],
+//   2: ["2:baz"]
+// }
+```
+
+
 
 
 #### toIdList()
