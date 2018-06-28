@@ -461,6 +461,108 @@ period and capitalize the next character.
 ```
 
 
+#### indexOfWithSet()
+Returns the index of one of the characters that matches the given set or regex. This works
+like the String.prototype.indexOf method but instead of looking for a single character, will
+look for one of the characters in a set or a matching regex.
+```Javascript
+"hello world".indexOfWithSet([" "]); //will return 5
+"hello world".indexOfWithSet(/ /);   //will return 5
+"hello world".indexOfWithSet(" ");   //will return 5
+```
+The power is being able to specify multiple characters to look for.
+```Javascript
+"hello\tworld".indexOfWithSet([" ", "\t"]); //will return 5
+"hello\tworld".indexOfWithSet(/[ \t]/);     //will return 5
+```
+You can also specify which character to start looking with
+```Javascript
+"hello\tworld how are you".indexOfWithSet([" ", "\t"], 7); //will return 11
+"hello\tworld how are you".indexOfWithSet(/[ \t]/, 7);     //will return 11
+```
+
+#### lastIndexOfWithSet()
+Returns the last index of one of the characters that matches the given set or regex. This works
+like the String.prototype.lastIndexOf method but instead of looking for a single character, will
+look for one of the characters in a set or a matching regex.
+```Javascript
+"foo bar baz".lastIndexOfWithSet([" "]); //will return 7
+"foo bar baz".lastIndexOfWithSet(/ /);   //will return 7
+"foo bar baz".lastIndexOfWithSet(" ");   //will return 7
+```
+The power is being able to specify multiple characters to look for.
+```Javascript
+"foo bar\tbaz".lastIndexOfWithSet([" ", "\t"]); //will return 7
+"foo bar\tbaz".lastIndexOfWithSet(/[ \t]/);   //will return 7
+```
+You can also specify which character to start looking with
+```Javascript
+"foo bar\tbaz".lastIndexOfWithSet([" ", "\t"], 6); //will return 4
+"foo bar\tbaz".lastIndexOfWithSet(/[ \t]/, 6);   //will return 4
+```
+
+
+#### justify()
+Cuts the given text into substrings of up to a given length or smaller. If a line is longer than the required
+width, will cut near the end and will insert a hyphen. If a text already has new lines, will replace those with
+two newlines and will insert paragraphPadding.
+```Javascript
+"hello world.".justify(5);
+//returns hello\nworld.
+```
+if the width is not long enough for a word, will break into multiple lines with a hypen. The length of each line will
+be the justify width including the hypen.
+```Javascript
+"Supercalifragilisticexpialidocious".justify(8);
+//returns 
+//    Superca-
+//    lifragi-
+//    listice-
+//    xpialid-
+//    ocious
+```
+If your text contains new lines already, those will be considered paragraphs and broken by 2 new lines in a row.
+```Javascript
+"I parked my car at harvard yard.\nIt was a green car.".justify(100);
+//returns
+// I parked my car at harvard yard.
+//
+// It was a green car.
+```
+You can also insert padding for each paragraph and line. If a paragraph padding is not set, will use the line padding.
+```Javascript
+"I parked my car at harvard yard\nIt was a green car.".justify(12, "\t\t", "\t\t\t");
+//returns
+//          I parked my
+//      car at 
+//      harvard yard
+//
+//
+//          It was a 
+//      green car.
+```
+Finally, you can make the first line in a paragraph a different width than the rest. (useful for tabbing the first line
+in a paragraph)
+```Javascript
+const lyrics = [
+    "All in all it was just a brick in the wall.",
+    "All in all it was all just bricks in the wall."
+].join("\n");
+lyrics.join("\n").justify(25, " ", "    ", 21);
+/* Returns
+
+    All in all it was
+  just a brick in the
+  wall.
+
+    All in all it was all
+  just bricks in the
+  wall.
+
+*/
+
+```
+
 
 
 # License
