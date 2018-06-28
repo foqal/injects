@@ -67,6 +67,10 @@ describe('text justify', () => {
         assert.strictEqual("hello world\nhow are\nyou doing?".justify(4, "", null, 12), "hello world\n\nhow are\n\nyou doing?");
     });
 
+    it('first line different space', () => {
+        assert.strictEqual("hello world\nhow are\nyou doing?".justify(6, "\t", ""), "hello\n\tworld\n\nhow\n\tare\n\nyou\n\tdoing?");
+    });
+
     it('first line width smaller', () => {
         const lyrics = [
             "Daddy's flown across the ocean",

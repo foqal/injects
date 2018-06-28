@@ -173,7 +173,7 @@ String.prototype.justify = function (width, textPadding="", paragraphPadding=nul
         throw new Error(`Invalid width: ${width}. Has to be greater than 0.`);
     }
 
-    if (!paragraphPadding) {
+    if (paragraphPadding == null) {
         paragraphPadding = textPadding;
     }
     if (!paragraphLineWidth) {
