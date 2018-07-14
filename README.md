@@ -433,7 +433,26 @@ Uses a RegExp to find matches in a string and returns those as a list of symbols
 new text value which is the text after removing the symbols.
 ```Javascript
 const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);
+//text will be "hello "
+//symbols will be ["world"]
 ```
+
+By default, will match the RegEx group at index 1 and add this to resulting symbols list. However, if 
+your RegExp is complicated and has many groups, can extract other index groups.
+```Javascript
+const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/( (<([^>]+)>))/g, {matchIndex: 2});
+//text will be "hello "
+//symbols will be ["<world>"]
+```
+
+Additionally you can replace which group index gets removed from the original text. By default, the entire
+match is replaced. However you may want to replace only a specific group.
+```Javascript
+"hello <world>".extractSymbolsWithRegExp(/( (<([^>]+)>))/g, {matchIndex: 2, replaceIndex: 3})
+//text will be "hello <>"
+//symbols will be ["world"]
+```
+
 
 #### createBlurb()
 Returns a shorter version of the string trying to cut the length at new line and space characters.

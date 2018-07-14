@@ -3,16 +3,34 @@ const IS_WHITESPACE_REGEX = /[ \n]/;
 
 const WHITESPACE_SET = new Set([" ", "\n", "\t"]);
 
-String.prototype.extractSymbolsWithRegExp = function (regexp) {
+/**
+ * Uses a RegExp to find matches in a string and returns those as a list of symbols. Additionally returns a
+ * new text value which is the text after removing the symbols.
+ * @param  {RegExp} regexp       The regex to use to extract matches.
+ * @param  {Object} options      Additional options to replace and match indexes.
+ * @param  {Number} options.matchIndex   Once a match is found, uses this RegExp group index in the match to add to the
+ *                               symbols list. By default this is set to the first index.
+ * @param  {Number} options.replaceIndex Once a match is found, this RegExp group is removed from the original text.
+ * @return {Object}              Returns an object containing a symbols list of items extracted and a new text
+ *                               string with the matched values removed.
+ */
+String.prototype.extractSymbolsWithRegExp = function (regexp, options) {
+    const {
+        matchIndex=1,
+        replaceIndex=0
+    } = options || {};
+
     let text = this;
     let match = regexp.exec(text);
     const symbols = [];
     while (match) {
-        const item = match[1];
-        symbols.push(item);
+        const item = match[matchIndex];
+        if (item) {
+            symbols.push(item);
+        }
+        text = text.replace(match[replaceIndex], "");
         match = regexp.exec(this);
     }
-    text = text.replace(regexp, "");
 
     return {symbols, text};
 };
