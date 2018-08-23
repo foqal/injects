@@ -164,12 +164,26 @@ Array.prototype.forEachReturned = function(handler) {
     });
 };
 
+/**
+ * Performs a forEach operation for a subset of the list starting with the given "start"
+ * index and continuing for the given length.
+ *
+ * @method offsetMap
+ * @param  {Number}     start       The index of where to start the map operation.
+ * @param  {Number}     length      The number of items to map.
+ * @param  {Function}   handler     The handler that will be called with each item in the map.
+ */
 Array.prototype.offsetForEach = function(start, length, handler) {
-    if (length == null || length > this.length) {
-        length = this.length;
+    if (!handler) {
+        throw new Error("Handle can not be null");
     }
     if (start == null || start < 0) {
         start = 0;
+    }
+    if (length == null || length > this.length) {
+        length = this.length;
+    } else {
+        length = Math.min(this.length, start + length);
     }
     for (let i = start; i < length; i++) {
         handler(this[i], i);
@@ -236,12 +250,16 @@ Array.prototype.mapFilter = function(handler, filter) {
  * @return {Array}                  The processed sublist of size (length - start) with the processed sub list.
  */
 Array.prototype.offsetMap = function(start, length, handler) {
-    if (length == null || length > this.length) {
-        length = this.length;
-    }
+    handler = handler || IDENTITY;
     if (start == null || start < 0) {
         start = 0;
     }
+    if (length == null || length > this.length) {
+        length = this.length;
+    } else {
+        length = Math.min(this.length, start + length);
+    }
+
     const collect = [];
     for (let i = start; i < length; i++) {
         collect.push(handler(this[i], i));

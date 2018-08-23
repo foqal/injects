@@ -189,6 +189,30 @@ Takes an array, applies a map operation to it and combines the returning array o
 Calls a handler on each item in the list and returns the list of items. This is like the forEach method, but this one returns the original list.
 
 #### offsetForEach()
+Performs a forEach operation for a subset of the list starting with the given "start"
+index and continuing for the given length.
+```Javascript
+const list = [1, 2, 3, 4, 5];
+const newList = [];
+list.offsetForEach(1, 2, item => newList.push(item));
+console.log(newList);
+// [2, 3]
+```
+Can also skip the start and/or length parameters
+```Javascript
+const list = [1, 2, 3, 4, 5];
+list.offsetForEach(3, null, item => console.log(item));
+// 3
+// 4
+// 5
+```
+```Javascript
+const list = [1, 2, 3, 4, 5];
+list.offsetForEach(null, 3, item => console.log(item));
+// 1
+// 2
+// 3
+```
 
 
 #### filterMap()
@@ -232,10 +256,28 @@ console.log(list.mapFilter(() => null, null));
 ```
 
 
-
-
 #### offsetMap()
 Performs a map operation for a subset of the list starting with the given "start" index and continuing for the given length. Returns the processed sublist.
+
+```Javascript
+const list = [1, 2, 3, 4, 5];
+const newList = list.offsetMap(1, 2, item => "i-" + item);
+console.log(newList);
+// ["i-2", "i-3"]
+```
+Can also skip any of the parameters
+```Javascript
+const list = [1, 2, 3, 4, 5];
+const c = list.offsetMap(1, 3);
+console.log(offsetMap);
+// [2, 3, 4]
+```
+```Javascript
+const list = [1, 2, 3, 4, 5];
+const newList = list.offsetMap(3, null, (item, index) => `[${index}]: ${item}`);
+console.log(newList);
+// ["[3]: 4", "[4]: 5"]
+```
 
 #### limit()
 Takes the first items from the list based on the count provided.

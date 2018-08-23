@@ -125,7 +125,7 @@ Array.prototype.diff = function(right, isEqual, maxLookahead=10) {
     }
 
     function addEach(start, newStart, list, adder) {
-        list.offsetForEach(start, newStart, (value, index) => {
+        list.offsetForEach(start, newStart - start, (value, index) => {
             diffs.push(adder(value, index));
         });
     }
