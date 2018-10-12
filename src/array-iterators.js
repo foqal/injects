@@ -67,6 +67,24 @@ Array.prototype.groupBy = function(key="id", value=null) {
 };
 
 
+
+// Creates a map of counts by given key
+//
+// `[{id: "a", name1}, {id: "a", name2}]` to `{"a": 2}`
+// @name distribution
+// @param {Object[]}        this    The list to count distribution
+// @param {String|Func}     key     The name of the id field to fetch from or a function
+//                                  to extract the key from the current item.
+// @returns {Object}                The map having the given key as the id and the value being the count of times this value appears.
+Array.prototype.distribution = function(key="id") {
+    return this.toIdMap(key, (item, current) => {
+        current = (current || 0) + 1;
+        return current;
+    });
+};
+
+
+
 // Creates an array of ids fetched from each item in the list.
 //
 // `[{id: 1}, {id: 2}]` to `[1, 2]`

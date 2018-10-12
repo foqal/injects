@@ -97,12 +97,12 @@ const list = [
     {id: 2, value: "baz"},
     
 ]
-console.log(list.toIdMap()); //By default uses a field called "id".
+console.log(list.groupBy()); //By default uses a field called "id".
 // {
 //   1: [{id: 1, value: "foo"}, {id: 1, value: "bar"}],
 //   2: [{id: 2, value: "baz"}]
 // }
-console.log(list.toIdMap("id", "value")); //Can also specify the key and/or value fields
+console.log(list.groupBy("id", "value")); //Can also specify the key and/or value fields
 // {
 //   1: ["foo", "bar"],
 //   2: ["baz"]
@@ -116,10 +116,34 @@ const list = [
     {id: 2, value: "baz"},
     
 ]
-console.log(list.toIdMap(row => row.id, row => row.id + ":" + row.value));
+console.log(list.groupBy(row => row.id, row => row.id + ":" + row.value));
 // {
 //   1: ["1:foo", "1:bar"],
 //   2: ["2:baz"]
+// }
+```
+
+
+
+#### distribution()
+Takes an array of items and counts the distribution of given keys
+```Javascript
+const list = [
+    {id: 1, value: "foo"},
+    {id: 1, value: "bar"},
+    {id: 2, value: "baz"},
+    
+]
+console.log(list.distribution()); //By default uses a field called "id".
+// {
+//   1: 2,
+//   2: 1
+// }
+console.log(list.distribution("value")); //Can also specify the key as a key name or function.
+// {
+//   "foo": 1,
+//   "bar": 1,
+//   "baz": 1
 // }
 ```
 
