@@ -280,6 +280,23 @@ console.log(list.mapFilter(() => null, null));
 ```
 
 
+#### filterNotFalsy
+Removes all elements that evaluate to falsy such as null, false, 0, etc
+```Javascript
+const list = [null, undefined, 0, false, "", true]
+console.log(list.filterNotFalsy());
+// [true]
+```
+
+#### filterNotNull
+Removes all null and undefined elements
+```Javascript
+const list = [null, undefined, 0, false, "", true]
+console.log(list.filterNotNull());
+// [0, false, "", true]
+```
+
+
 #### offsetMap()
 Performs a map operation for a subset of the list starting with the given "start" index and continuing for the given length. Returns the processed sublist.
 

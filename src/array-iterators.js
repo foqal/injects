@@ -1,4 +1,4 @@
-import {IDENTITY} from './identity';
+import {IDENTITY, IDENTITY_NOT_NULL} from './identity';
 
 
 
@@ -253,6 +253,24 @@ Array.prototype.mapFilter = function(handler, filter) {
         }
         return list;
     }, []);
+};
+
+
+
+// Removes all elements that evaluate to falsy such as null, false, 0, etc
+// @method filterNotFalsy
+// @param {Object[]}    this        The list to filter from
+// @return {Object[]} The filtered list
+Array.prototype.filterNotFalsy = function() {
+    return this.filter(IDENTITY);
+};
+
+// Removes all null elements
+// @method filterNotNull
+// @param {Object[]}    this        The list to filter from
+// @return {Object[]} The filtered list
+Array.prototype.filterNotNull = function() {
+    return this.filter(IDENTITY_NOT_NULL);
 };
 
 
