@@ -258,18 +258,18 @@ Array.prototype.mapFilter = function(handler, filter) {
 
 
 // Removes all elements that evaluate to falsy such as null, false, 0, etc
-// @method filterNotFalsy
+// @method filterFalsy
 // @param {Object[]}    this        The list to filter from
 // @return {Object[]} The filtered list
-Array.prototype.filterNotFalsy = function() {
+Array.prototype.filterFalsy = function() {
     return this.filter(IDENTITY);
 };
 
 // Removes all null elements
-// @method filterNotNull
+// @method filterNull
 // @param {Object[]}    this        The list to filter from
 // @return {Object[]} The filtered list
-Array.prototype.filterNotNull = function() {
+Array.prototype.filterNull = function() {
     return this.filter(IDENTITY_NOT_NULL);
 };
 

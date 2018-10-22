@@ -280,19 +280,19 @@ console.log(list.mapFilter(() => null, null));
 ```
 
 
-#### filterNotFalsy
+#### filterFalsy
 Removes all elements that evaluate to falsy such as null, false, 0, etc
 ```Javascript
 const list = [null, undefined, 0, false, "", true]
-console.log(list.filterNotFalsy());
+console.log(list.filterFalsy());
 // [true]
 ```
 
-#### filterNotNull
+#### filterNull
 Removes all null and undefined elements
 ```Javascript
 const list = [null, undefined, 0, false, "", true]
-console.log(list.filterNotNull());
+console.log(list.filterNull());
 // [0, false, "", true]
 ```
 
