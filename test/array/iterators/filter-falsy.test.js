@@ -20,7 +20,7 @@ describe('filterFalsy', () => {
     });
 
     it('null elements removed', () => {
-        const items = [null, undefined].filterNotFalsy();
+        const items = [null, undefined].filterFalsy();
         assert.deepEqual(items, []);
     });
 
