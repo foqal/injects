@@ -349,6 +349,8 @@ Returns a list of items that appear in both this list and the passed in list.
 #### exclude()
 Retuns the list of items that are not in the passed in list.
 
+
+
 #### copy()
 Creates a shallow copy of this array. If an extractor is provided, will only returned the extracted items. (Performs a basic map operation).
 
@@ -357,6 +359,126 @@ Creates a shallow copy of this array. If an extractor is provided, will only ret
 #### findIndexComparing()
 
 #### findValueComparing()
+
+
+#### sortBy()
+Creates a copy of the current array and sorts by the given list in a ascending order.
+
+The keys define how to sort. They are a list of:
+ * A String used to identify the name of the key in the object. The sort order is ascending
+ * A Function used to extract the value to sort by. The sort order is based on ascending.
+ * An object containing a key and direction. The key is also a String or Function as previously defined. The
+    direction specifies the sort order using the SortDirection values. (1 or -1)
+
+```Javascript
+console.log([{id: 1, count: 4}, {id: 2, count: 10}].sortBy("count")); 
+// [{id: 2, count: 10}, {id: 1, count: 4}]
+```
+
+You can also provide a custom handler to extract the key of each item
+```Javascript
+const items = [
+    {id: 4, key: 3},
+    {id: 3, key: 3},
+    {id: 2, key: 2},
+    {id: 1, key: 1}
+].sortBy(item => item.key * 100 + item.id);
+// [{id: 1, key: 1}, {id: 2, key: 2}, {id: 3, key: 3}, {id: 4, key: 3}]
+```
+
+If you provide multiple keys, the method will first sort by the first key in ascending order, then second in ascending order and so on.
+```Javascript
+const items = [
+    {count: 10, id: 1},
+    {count: 10, id: 3},
+    {count: 10, id: 2},
+    {count: 1, id: 1}
+].sortBy("count", "id");
+// [{count: 1, id: 1}, {count: 10, id: 1}, {count: 10, id: 2}, {count: 10, id: 3}]
+```
+
+You can also control the directionality of each sort key by using an object with "key" and "direction". 
+```Javascript
+import {SortDirection} from 'native-injects';
+
+const items = [
+    {id: 4, key: 2, count: 10},
+    {id: 3, key: 2, count: 10},
+    {id: 2, key: 3, count: 10},
+    {id: 1, key: 4, count: 1}
+].sortBy(
+    {key: "count", direction: SortDirection.DESCENDING},
+    {key: item => item.key, direction: SortDirection.ASCENDING},
+    "id", //sorts ascending by default
+);
+//[
+//    {id: 3, key: 2, count: 10}, 
+//    {id: 4, key: 2, count: 10}, 
+//    {id: 2, key: 3, count: 10}, 
+//    {id: 1, key: 4, count: 1}
+//]
+```
+
+
+#### sortByDescending()
+
+Creates a copy of the current array and sorts by the given list in a descending order.
+
+The keys define how to sort. They are a list of:
+ * A String used to identify the name of the key in the object. The sort order is descending
+ * A Function used to extract the value to sort by. The sort order is based on descending.
+ * An object containing a key and direction. The key is also a String or Function as previously defined. The
+   direction specifies the sort order using the SortDirection values. (1 or -1)
+
+```Javascript
+console.log([{id: 1, count: 4}, {id: 2, count: 10}].sortByDescending("count")); 
+// [{id: 1, count: 4}, {id: 2, count: 10}]
+```
+You can also provide a custom handler to extract the key of each item
+```Javascript
+const items = [
+    {id: 4, key: 3},
+    {id: 3, key: 3},
+    {id: 2, key: 2},
+    {id: 1, key: 1}
+].sortByDescending(item => item.key * 100 + item.id);
+// [{id: 4, key: 3}, {id: 3, key: 3}, {id: 2, key: 2}, {id: 1, key: 1}]
+```
+
+
+If you provide multiple keys, the method will first sort by the first key in descending order, then second in descending order and so on.
+```Javascript
+const items = [
+    {count: 10, id: 1},
+    {count: 10, id: 3},
+    {count: 10, id: 2},
+    {count: 1, id: 1}
+].sortByDescending("count", "id");
+// [{count: 10, id: 3}, {count: 10, id: 2}, {count: 10, id: 1}, {count: 1, id: 1},]
+```
+
+You can also control the directionality of each sort key by using an object with "key" and "direction". 
+```Javascript
+import {SortDirection} from 'native-injects';
+
+const items = [
+    {id: 4, key: 2, count: 10},
+    {id: 3, key: 2, count: 10},
+    {id: 2, key: 3, count: 10},
+    {id: 1, key: 4, count: 1}
+].sortByDescending(
+    {key: "count", direction: SortDirection.DESCENDING},
+    {key: item => item.key, direction: SortDirection.ASCENDING},
+    "id", //sorts descending by default
+);
+//[
+//    {id: 4, key: 2, count: 10}, 
+//    {id: 3, key: 2, count: 10}, 
+//    {id: 2, key: 3, count: 10}, 
+//    {id: 1, key: 4, count: 1}
+//]
+```
+
 
 
 ### Math

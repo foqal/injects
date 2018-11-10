@@ -1,16 +1,23 @@
 import {IDENTITY, IDENTITY_NOT_NULL} from './identity';
 
+//Default sort order directions
+const SORT_DIRECTION = {
+    //Gets multiplied by the difference when sorting to sort in ascending order
+    ASCENDING: 1,
+
+    //Gets multiplied by the difference when sorting to sort in descending order
+    DESCENDING: -1
+};
+exports.SortDirection = SORT_DIRECTION;
 
 
-/**
- * Given a value, will return a function. This function, when passed an object, will extract the value.
- * @method createValueAssigner
- * @param  {String|Function} key            If the key is a string, this key string will be used to extract the key from the object.
- *                                          If the key is a function, will simply return that function.
- *                                          If no value present, will return whatever is the defaultValue parameter.
- * @param  {Object}          defaultValue   The default to use when value is null.
- * @return {Function}       A function which extracts a field from a given object.
- */
+// Given a value, will return a function. This function, when passed an object, will extract the value.
+// @method createValueAssigner
+// @param  {String|Function} key            If the key is a string, this key string will be used to extract the key from the object.
+//                                        If the key is a function, will simply return that function.
+//                                        If no value present, will return whatever is the defaultValue parameter.
+// @param  {Object}          defaultValue   The default to use when value is null.
+// @return {Function}       A function which extracts a field from a given object.
 function createValueAssigner(value, defaultValue=IDENTITY) {
     if (!value) {
         value = defaultValue;
@@ -182,15 +189,14 @@ Array.prototype.forEachReturned = function(handler) {
     });
 };
 
-/**
- * Performs a forEach operation for a subset of the list starting with the given "start"
- * index and continuing for the given length.
- *
- * @method offsetMap
- * @param  {Number}     start       The index of where to start the map operation.
- * @param  {Number}     length      The number of items to map.
- * @param  {Function}   handler     The handler that will be called with each item in the map.
- */
+
+// Performs a forEach operation for a subset of the list starting with the given "start"
+// index and continuing for the given length.
+//
+// @method offsetMap
+// @param  {Number}     start       The index of where to start the map operation.
+// @param  {Number}     length      The number of items to map.
+// @param  {Function}   handler     The handler that will be called with each item in the map.
 Array.prototype.offsetForEach = function(start, length, handler) {
     if (!handler) {
         throw new Error("Handle can not be null");
@@ -274,17 +280,16 @@ Array.prototype.filterNull = function() {
 };
 
 
-/**
- * Performs a map operation for a subset of the list starting with the given "start"
- * index and continuing for the given length. Returns the processed sublist.
- *
- * @method offsetMap
- * @param  {Number}     start       The index of where to start the map operation.
- * @param  {Number}     length      The number of items to map.
- * @param  {Function}   handler     The handler that will be called with each item in the map.
- *                                  Each item returned by the handler will be returned in the resulting map.
- * @return {Array}                  The processed sublist of size (length - start) with the processed sub list.
- */
+
+// Performs a map operation for a subset of the list starting with the given "start"
+// index and continuing for the given length. Returns the processed sublist.
+//
+// @method offsetMap
+// @param  {Number}     start       The index of where to start the map operation.
+// @param  {Number}     length      The number of items to map.
+// @param  {Function}   handler     The handler that will be called with each item in the map.
+//                               Each item returned by the handler will be returned in the resulting map.
+// @return {Array}                  The processed sublist of size (length - start) with the processed sub list.
 Array.prototype.offsetMap = function(start, length, handler) {
     handler = handler || IDENTITY;
     if (start == null || start < 0) {
@@ -401,14 +406,93 @@ Array.prototype.exclude = function (exclude, extractor) {
 };
 
 
-/**
- * Creates a shallow copy of this array. If an extractor is provided, will only
- * returned the extracted items. (Performs a basic map operation).
- *
- * @method copy
- * @param  {Function} extractor The optional handler to call on each item.
- * @return {Array}              The copied list.
- */
+// Called by sortBy and sortByDescending to do the copy and actual sort of the list.
+//
+// The keys define how to sort. They are a list of:
+//  * A String used to identify the name of the key in the object. The sort order is based on defaultDirection.
+//  * A Function used to extract the value to sort by. The sort order is based on defaultDirection.
+//  * An object containing a key and direction. The key is also a String or Function as previously defined. The
+//    direction specifies the sort order using the SortDirection values. (1 or -1)
+//
+// @method sortBy
+// @param {Object[]}            list        The list to sort.
+// @param {String|Func|Object}  ...keys     The list containing the key to sort by. See description for more detail,
+// @param {Number}     defaultDirection     The default sort order if no direction present.
+// @return {Object[]}                       The sorted list.
+function sort(list, keys, defaultDirection) {
+    if (keys.isEmpty) {
+        keys.push("id");
+    }
+    const fetchers = keys.map(key => {
+        const type = typeof key;
+        if (type == "string" || type == "function") {
+            return {
+                fetcher: createValueAssigner(key),
+                direction: defaultDirection
+            };
+        } else {
+            return {
+                fetcher: createValueAssigner(key.key),
+                direction: key.direction
+            };
+        }
+    });
+    const length = fetchers.length;
+
+    return list.copy().sort((a, b) => {
+        for (let i = 0; i < length; i++) {
+            const {direction, fetcher} = fetchers[i];
+            const value = direction * (fetcher(a) - fetcher(b));
+            if (value != 0 && Math.abs(value) > Number.EPSILON) {
+                return value;
+            }
+        }
+
+        return 0;
+    });
+}
+
+
+// Creates a copy of the current array and sorts by the given list in a ascending order.
+//
+// The keys define how to sort. They are a list of:
+//  * A String used to identify the name of the key in the object. The sort order is ascending
+//  * A Function used to extract the value to sort by. The sort order is based on ascending.
+//  * An object containing a key and direction. The key is also a String or Function as previously defined. The
+//    direction specifies the sort order using the SortDirection values. (1 or -1)
+//
+// @method sortBy
+// @param {Object[]}            this        The list to sort.
+// @param {String|Func|Object}  ...keys     The list containing the key to sort by. See description for more detail,
+// @return {Object[]}                       The sorted list.
+Array.prototype.sortBy = function (...keys) {
+    return sort(this, keys, SORT_DIRECTION.ASCENDING);
+};
+
+
+// Creates a copy of the current array and sorts by the given list in a descending order.
+//
+// The keys define how to sort. They are a list of:
+//  * A String used to identify the name of the key in the object. The sort order is descending
+//  * A Function used to extract the value to sort by. The sort order is based on descending.
+//  * An object containing a key and direction. The key is also a String or Function as previously defined. The
+//    direction specifies the sort order using the SortDirection values. (1 or -1)
+//
+// @method sortByDescending
+// @param {Object[]}            this        The list to sort.
+// @param {String|Func|Object}  ...keys     The list containing the key to sort by. See description for more detail,
+// @return {Object[]}                       The sorted list.
+Array.prototype.sortByDescending = function (...keys) {
+    return sort(this, keys, SORT_DIRECTION.DESCENDING);
+};
+
+
+// Creates a shallow copy of this array. If an extractor is provided, will only
+// returned the extracted items. (Performs a basic map operation).
+
+// @method copy
+// @param  {Function} extractor The optional handler to call on each item.
+// @return {Array}              The copied list.
 Array.prototype.copy = function(extractor) {
     if (extractor) {
         return this.map(extractor);
