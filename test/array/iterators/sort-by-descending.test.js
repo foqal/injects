@@ -131,6 +131,36 @@ describe('sortByDescending', () => {
             ].sortByDescending(item => item.key * 100 + item.id);
             assert.deepEqual(items, [{id: 4, key: 3}, {id: 3, key: 3}, {id: 2, key: 2}, {id: 1, key: 1}]);
         });
+
+        it('floats', () => {
+            const items = [
+                {id: .0001},
+                {id: .0002},
+                {id: .0003},
+                {id: .0004}
+            ].sortByDescending("id");
+            assert.deepEqual(items, [
+                {id: .0004},
+                {id: .0003},
+                {id: .0002},
+                {id: .0001}
+            ]);
+        });
+
+        it('many floats', () => {
+            const items = [
+                {id: .0001, key: .00001},
+                {id: .0001, key: .00002},
+                {id: .0002, key: .00001},
+                {id: .0002, key: .00002}
+            ].sortByDescending("id", "key");
+            assert.deepEqual(items, [
+                {id: .0002, key: .00002},
+                {id: .0002, key: .00001},
+                {id: .0001, key: .00002},
+                {id: .0001, key: .00001}
+            ]);
+        });
     });
 
 

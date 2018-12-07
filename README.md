@@ -789,6 +789,32 @@ lyrics.join("\n").justify(25, " ", "    ", 21);
 
 
 
+
+#### capitalize()
+Capitalizes the string. (Makes the first character capital). If presented with a splitter,
+the string will first be split up by the splitter, capitalized, and rejoined.
+
+If a splitter is present, and no joiner, the string will be rejoined with
+the original character that split it. If a joiner is present, the string will
+be rejoined with this character. For example if "hello world" is split by spaces
+and the joiner is "-", the final result will be "Hello-World".
+```Javascript
+"hello".capitalize() //returns "Hello"
+```
+When presented with a splitter, will segment into chunks and capitalize the first letter of every chunk
+```Javascript
+"hello world! how are you?".capitalize(" ")
+//returns "Hello World! How Are You?"
+```
+When rejoining the string you can have it join on a different string all together.
+```Javascript
+"hello\nworld".capitalize("\n", " ") 
+//returns "Hello World"
+```
+
+
+
+
 # License
 ISC License (ISC)
 Copyright 2018 Foqal inc

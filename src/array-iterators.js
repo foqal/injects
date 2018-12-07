@@ -443,7 +443,7 @@ function sort(list, keys, defaultDirection) {
         for (let i = 0; i < length; i++) {
             const {direction, fetcher} = fetchers[i];
             const value = direction * (fetcher(a) - fetcher(b));
-            if (value != 0 && Math.abs(value) > Number.EPSILON) {
+            if (Math.abs(value) > Number.EPSILON) {
                 return value;
             }
         }

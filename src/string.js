@@ -235,3 +235,59 @@ String.prototype.justify = function (width, textPadding="", paragraphPadding=nul
         return lines.join("\n" + textPadding);
     }).join("\n\n" + paragraphPadding);
 };
+
+
+
+
+/**
+ * Capitalizes the string. (Makes the first character capital). If presented with a splitter,
+ * the string will first be split up by the splitter, capitalized, and rejoined.
+ *
+ * If a splitter is present, and no joiner, the string will be rejoined with
+ * the original character that split it. If a joiner is present, the string will
+ * be rejoined with this character. For example if "hello world" is split by spaces
+ * and the joiner is "-", the final result will be "Hello-World".
+ *
+ * @name  capitalize
+ * @param  {RegExp|String}  splitter        The string or RegExp used to split up the string before capitalizing.
+ * @param  {String}         joiner          The string to join the expression after capitalizing.
+ * @return {String}                         Returns the capitalized string.
+ */
+String.prototype.capitalize = function (splitter, joiner) {
+    if (!this) {
+        return this;
+    }
+    if (splitter) {
+        if (typeof splitter === "string") {
+            splitter = new RegExp(splitter, "g");
+        }
+        if (!splitter.global) {
+            splitter = new RegExp(splitter.source, splitter.flags + "g");
+        }
+
+        const text = this;
+        let match = splitter.exec(text);
+        const segments = [];
+        let lastStart = 0;
+        while (match) {
+            const index = match.index;
+            const split = match[0];
+            const segment = text.substr(lastStart, index - lastStart);
+            segments.push(segment.capitalize());
+            segments.push(joiner || split);
+
+            lastStart = index + split.length;
+
+            match = splitter.exec(text);
+        }
+
+        if (lastStart >= 0 && lastStart < text.length) {
+            segments.push(text.substr(lastStart).capitalize());
+        }
+        return segments.join("");
+    } else {
+        return this[0].toLocaleUpperCase() + this.substr(1);
+    }
+};
+
+
