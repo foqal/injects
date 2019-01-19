@@ -813,6 +813,24 @@ When rejoining the string you can have it join on a different string all togethe
 ```
 
 
+## Date Properties
+Since these are often being calculated and Javascript does not have a good reference to them, we added the constant values in milliseconds of common date values.
+
+| Property           | Value          | Notes     |
+| ------------------ | -------------- | --------- |
+| DATE.SECOND        | 1000           | 1 Second  |
+| Date.MINUTE        | 60,000         | 1 Minute  |
+| Date.HOUR          | 3,600,000      | 1 Hour    |
+| Date.DAY           | 86,400,000     | 1 Day     |
+| Date.WEEK          | 604,800,000    | 7 Days    |
+| Date.MONTH         | 2,592,000,000  | 30 Days   |
+| Date.MONTH_30      | 2,592,000,000  | 30 Days   |
+| Date.MONTH_31      | 2,678,400,000  | 31 Days   |
+| Date.YEAR          | 31,536,000,000 | 356 Days  |
+| Date.LEAP_YEAR     | 31,622,400,000 | 366 Days  |
+| Date.TROPICAL_YEAR | 31,556,926,000 | * 365 days, 5 hours, 48 minutes, and 46 seconds |
+
+* Note: Tropical Year - https://www.grc.nasa.gov/www/k-12/Numbers/Math/Mathematical_Thinking/calendar_calculations.htm
 
 
 # License
