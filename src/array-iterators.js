@@ -376,16 +376,12 @@ Array.prototype.findIndexRight = function(predicate) {
 // @method union
 // @param {Object[]}    this        The list to manipulate.
 // @param {Object[]}    other       The list of entites to union with.
-// @param {Func}        extractor   The optional method to use to extract the values that will be compares.
+// @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
 // @return {Object[]}               The subset list.
-Array.prototype.union = function (other, extractor) {
-
-    if (!extractor) {
-        extractor = IDENTITY;
-    }
-
-    const otherSet = new Set(other.map(extractor));
-    return this.filter((item, index) => otherSet.has(extractor(item, index)));
+Array.prototype.union = function (other, extractor=IDENTITY) {
+    const valueExtractor = createValueAssigner(extractor);
+    const otherSet = new Set(other.map(valueExtractor));
+    return this.filter((item, index) => otherSet.has(valueExtractor(item, index)));
 };
 
 // Retuns the list of items that are not in the passed in list.
@@ -393,16 +389,12 @@ Array.prototype.union = function (other, extractor) {
 // @method exclude
 // @param {Object[]}    this        The list to manipulate.
 // @param {Object[]}    exclude     The list of entites to exclude.
-// @param {Func}        extractor   The optional method to use to extract the values that will be compares.
+// @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
 // @return {Object[]}               The subset list.
-Array.prototype.exclude = function (exclude, extractor) {
-
-    if (!extractor) {
-        extractor = IDENTITY;
-    }
-
-    const excludeSet = new Set(exclude.map(extractor));
-    return this.filter((item, index) => excludeSet.has(extractor(item, index)));
+Array.prototype.exclude = function (exclude, extractor=IDENTITY) {
+    const valueExtractor = createValueAssigner(extractor);
+    const excludeSet = new Set(exclude.map(valueExtractor));
+    return this.filter((item, index) => !excludeSet.has(valueExtractor(item, index)));
 };
 
 

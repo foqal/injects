@@ -95,7 +95,7 @@ const list = [
     {id: 1, value: "foo"},
     {id: 1, value: "bar"},
     {id: 2, value: "baz"},
-    
+
 ]
 console.log(list.groupBy()); //By default uses a field called "id".
 // {
@@ -114,7 +114,7 @@ const list = [
     {id: 1, value: "foo"},
     {id: 1, value: "bar"},
     {id: 2, value: "baz"},
-    
+
 ]
 console.log(list.groupBy(row => row.id, row => row.id + ":" + row.value));
 // {
@@ -132,7 +132,7 @@ const list = [
     {id: 1, value: "foo"},
     {id: 1, value: "bar"},
     {id: 2, value: "baz"},
-    
+
 ]
 console.log(list.distribution()); //By default uses a field called "id".
 // {
@@ -343,12 +343,40 @@ Finds the first element from the right given a specific predicate.
 #### findIndexRight()
 Finds the first element's index from the right given a specific predicate.
 
+
 #### union()
 Returns a list of items that appear in both this list and the passed in list.
+```Javascript
+console.log([1, 2, 3, 4, 5].union([2, 3]));
+// [2, 3]
+```
+For objects, you can control how each object gets serialized to be compared with either a string key name or a handler function
+```Javascript
+console.log([{id: 1}, {id: 2}].union([{id: 1}, {id: 4}], "id"));
+// [{id: 1}]
+
+
+console.log([{id: 1}, {id: 2}].union([{id: 1}, {id: 4}], item => item.id));
+// [{id: 1}]
+```
+
+
 
 #### exclude()
-Retuns the list of items that are not in the passed in list.
+Returns the list of items that are not in the passed in list.
+```Javascript
+console.log([1, 2, 3, 4, 5].exclude([2, 3]));
+// [1, 4, 5]
+```
+For objects, you can control how each object gets serialized to be compared with either a string key name or a handler function
+```Javascript
+console.log([{id: 1}, {id: 2}].exclude([{id: 1}, {id: 4}], "id"));
+// [{id: 2}]
 
+
+console.log([{id: 1}, {id: 2}].exclude([{id: 1}, {id: 4}], item => item.id));
+// [{id: 2}]
+```
 
 
 #### copy()
@@ -371,7 +399,7 @@ The keys define how to sort. They are a list of:
     direction specifies the sort order using the SortDirection values. (1 or -1)
 
 ```Javascript
-console.log([{id: 1, count: 4}, {id: 2, count: 10}].sortBy("count")); 
+console.log([{id: 1, count: 4}, {id: 2, count: 10}].sortBy("count"));
 // [{id: 2, count: 10}, {id: 1, count: 4}]
 ```
 
@@ -397,7 +425,7 @@ const items = [
 // [{count: 1, id: 1}, {count: 10, id: 1}, {count: 10, id: 2}, {count: 10, id: 3}]
 ```
 
-You can also control the directionality of each sort key by using an object with "key" and "direction". 
+You can also control the directionality of each sort key by using an object with "key" and "direction".
 ```Javascript
 import {SortDirection} from 'native-injects';
 
@@ -412,9 +440,9 @@ const items = [
     "id", //sorts ascending by default
 );
 //[
-//    {id: 3, key: 2, count: 10}, 
-//    {id: 4, key: 2, count: 10}, 
-//    {id: 2, key: 3, count: 10}, 
+//    {id: 3, key: 2, count: 10},
+//    {id: 4, key: 2, count: 10},
+//    {id: 2, key: 3, count: 10},
 //    {id: 1, key: 4, count: 1}
 //]
 ```
@@ -431,7 +459,7 @@ The keys define how to sort. They are a list of:
    direction specifies the sort order using the SortDirection values. (1 or -1)
 
 ```Javascript
-console.log([{id: 1, count: 4}, {id: 2, count: 10}].sortByDescending("count")); 
+console.log([{id: 1, count: 4}, {id: 2, count: 10}].sortByDescending("count"));
 // [{id: 1, count: 4}, {id: 2, count: 10}]
 ```
 You can also provide a custom handler to extract the key of each item
@@ -457,7 +485,7 @@ const items = [
 // [{count: 10, id: 3}, {count: 10, id: 2}, {count: 10, id: 1}, {count: 1, id: 1},]
 ```
 
-You can also control the directionality of each sort key by using an object with "key" and "direction". 
+You can also control the directionality of each sort key by using an object with "key" and "direction".
 ```Javascript
 import {SortDirection} from 'native-injects';
 
@@ -472,9 +500,9 @@ const items = [
     "id", //sorts descending by default
 );
 //[
-//    {id: 4, key: 2, count: 10}, 
-//    {id: 3, key: 2, count: 10}, 
-//    {id: 2, key: 3, count: 10}, 
+//    {id: 4, key: 2, count: 10},
+//    {id: 3, key: 2, count: 10},
+//    {id: 2, key: 3, count: 10},
 //    {id: 1, key: 4, count: 1}
 //]
 ```
@@ -545,10 +573,10 @@ Takes an array and returns where the current array and given array are different
 ]
 ```
 If a value exists in this array, but not in the presented array, rightValue and rightIndex will be null. If a value exists in the right array but not in the current array, thisValue and thisIndex will be null.
- 
+
 **For example:**
 ```Javascript
-['1', 'a', 'b', 'c', 'd'].diff(['2', 'a', 'b', 'c']) 
+['1', 'a', 'b', 'c', 'd'].diff(['2', 'a', 'b', 'c'])
 // returns  
 // [
 //    ['1', '2', 0, 0]
@@ -560,10 +588,10 @@ You can also pass in a handler to do custom comparisons. The parameters of the h
  * rightValue - The value in the right array.
  * thisIndex - The index in this list.
  * rightIndex - The index in the right array.
- 
+
 **For example:**
 ```Javascript
-[{v: 'a'}, {v: 'b'}, {v: 'c'}, {v: 'd'}].diff(['a', 'b', 'c', 'e'], (left, right) => left.v == right) 
+[{v: 'a'}, {v: 'b'}, {v: 'c'}, {v: 'd'}].diff(['a', 'b', 'c', 'e'], (left, right) => left.v == right)
 // returns  
 // [
 //    [{v: 'd'}, 'e', 3, 3]
@@ -571,14 +599,14 @@ You can also pass in a handler to do custom comparisons. The parameters of the h
 ```
 
 Finally, you can pass in a max lookahead value. This will tell how far forward to look for similarities before assuming that all values in the list are different.
- 
+
 **For example:**
 ```Javascript
 ['a', 'b', 'c', '1', '2', '3', 'd', 'e'].diff(['a', 'b', 'c', 'd', 'e'], null, 5);
 // Will find that '1', '2', and '3' are in the left but not in the right.
 
 ['a', 'b', 'c', '1', '2', '3', 'd', 'e'].diff(['a', 'b', 'c', 'd', 'e'], null, 1);
-// Will assume that '1', '2', '3' where replaced with 'c', 'd', 'e' respectively and then, 
+// Will assume that '1', '2', '3' where replaced with 'c', 'd', 'e' respectively and then,
 // 'd' and 'e' were added to the left list.
 ```
 
@@ -642,7 +670,7 @@ const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/<([^>]+)>/g);
 //symbols will be ["world"]
 ```
 
-By default, will match the RegEx group at index 1 and add this to resulting symbols list. However, if 
+By default, will match the RegEx group at index 1 and add this to resulting symbols list. However, if
 your RegExp is complicated and has many groups, can extract other index groups.
 ```Javascript
 const {text, symbols} = "hello <world>".extractSymbolsWithRegExp(/( (<([^>]+)>))/g, {matchIndex: 2});
@@ -665,7 +693,7 @@ Returns a shorter version of the string trying to cut the length at new line and
 "hello world\nhow are you".createBlurb(13);
 // "hello world..."
 ```
-By default, it will make the string as long as the first newline character. However if a second parameter 
+By default, it will make the string as long as the first newline character. However if a second parameter
 "minBlurb" is provided, will return a string including new lines.
 ```Javascript
 "hello world\nhow are you\nI am good".createBlurb(30, 25);
@@ -675,9 +703,9 @@ By default, it will make the string as long as the first newline character. Howe
 
 
 #### createBlurbSingleLine()
-Returns a shorter version of the string trying to cut the length at space characters. 
+Returns a shorter version of the string trying to cut the length at space characters.
 
-If the character before and after the newline is a regular word character, will replace the newline with a 
+If the character before and after the newline is a regular word character, will replace the newline with a
 period and capitalize the next character.
 ```Javascript
 "hello world\nhow are you\nI am good".createBlurbSingleLine(25)`
@@ -738,7 +766,7 @@ if the width is not long enough for a word, will break into multiple lines with 
 be the justify width including the hypen.
 ```Javascript
 "Supercalifragilisticexpialidocious".justify(8);
-//returns 
+//returns
 //    Superca-
 //    lifragi-
 //    listice-
@@ -758,11 +786,11 @@ You can also insert padding for each paragraph and line. If a paragraph padding 
 "I parked my car at harvard yard\nIt was a green car.".justify(12, "\t\t", "\t\t\t");
 //returns
 //          I parked my
-//      car at 
+//      car at
 //      harvard yard
 //
 //
-//          It was a 
+//          It was a
 //      green car.
 ```
 Finally, you can make the first line in a paragraph a different width than the rest. (useful for tabbing the first line
@@ -808,7 +836,7 @@ When presented with a splitter, will segment into chunks and capitalize the firs
 ```
 When rejoining the string you can have it join on a different string all together.
 ```Javascript
-"hello\nworld".capitalize("\n", " ") 
+"hello\nworld".capitalize("\n", " ")
 //returns "Hello World"
 ```
 
