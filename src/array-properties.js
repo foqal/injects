@@ -10,6 +10,16 @@ if (!Array.prototype.hasOwnProperty("isEmpty")) {
     });
 }
 
+if (!Array.prototype.hasOwnProperty("isNotEmpty")) {
+    Object.defineProperty(Array.prototype, 'isNotEmpty', {
+        enumerable: false,
+        configurable: false,
+        get: function () {
+            return this.some(IDENTITY_TRUE);
+        }
+    });
+}
+
 if (!Array.prototype.hasOwnProperty("firstElement")) {
     Object.defineProperty(Array.prototype, 'firstElement', {
         enumerable: false,

@@ -30,6 +30,16 @@ console.log([1, 2, 3].isEmpty);
 // false
 ```
 
+#### isNotEmpty
+Returns true if the list is not empty, else false.
+```Javascript
+console.log([1, 2, 3].isNotEmpty);
+// true
+
+console.log([].isNotEmpty);
+// false
+```
+
 #### firstElement
 Returns the first element in the array or null if empty.
 ```Javascript
