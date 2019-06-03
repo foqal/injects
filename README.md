@@ -519,6 +519,31 @@ const items = [
 
 
 
+#### equals()
+Checks whether the current array and the given array are equals by comparing pairwise equality.
+```Javascript
+const left = [1,2,3];
+left.equals([1,2,3]);
+//returns true
+```
+If elements have their own equals method, will use the equals method to compare elements.
+```Javascript
+const left = [
+    {equals: el => el == 1},
+    {equals: el => el == 2}
+];
+left.equals([1,2]);
+//returns true
+```
+This allows for a deep equals operator to work as well.
+```Javascript
+const left = [ [1], [2], [3] ];
+left.equals([ [1], [2], [3] ]);
+//returns true
+```
+
+
+
 ### Math
 Standard list math operations
 

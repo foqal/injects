@@ -536,3 +536,25 @@ Array.prototype.findValueComparing = function (extractor, comparer) {
         }
     }, null);
 };
+
+
+// Checks whether the current array and the given array are equals by comparing pairwise equality.
+// If elements have their own equals method, will use the equals method to compare elements. This allows
+// for a deep equals operator to work.
+//
+// @method equals
+// @param  {Array} other        The array to compare with this current array.
+// @return {Boolean}              Wether the arrays are equal or not.
+Array.prototype.equals = function(other) {
+    if (!other || !(other instanceof Array) || this.length != other.length) {
+        return false;
+    }
+
+    return this.every((element, index) => {
+        const otherValue = other[index];
+        if (element.equals && typeof element.equals === "function") {
+            return element.equals(otherValue);
+        }
+        return otherValue === element;
+    });
+};
