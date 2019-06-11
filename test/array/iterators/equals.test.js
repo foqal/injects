@@ -63,4 +63,20 @@ describe('equals', () => {
         assert.strictEqual([ [1], [2] ].equals([ [1] ]), false);
     });
 
+    it('null values same', () => {
+        assert.strictEqual([ null ].equals([ null ]), true);
+    });
+
+    it('null values different', () => {
+        assert.strictEqual([ null ].equals([ 1 ]), false);
+    });
+
+    it('null values different opposite', () => {
+        assert.strictEqual([ 1 ].equals([ null ]), false);
+    });
+
+    it('multi null values different opposite', () => {
+        assert.strictEqual([ 1, null ].equals([ 1, null ]), true);
+    });
+
 });

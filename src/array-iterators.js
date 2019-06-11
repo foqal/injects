@@ -552,7 +552,7 @@ Array.prototype.equals = function(other) {
 
     return this.every((element, index) => {
         const otherValue = other[index];
-        if (element.equals && typeof element.equals === "function") {
+        if (element != null && element.equals && typeof element.equals === "function") {
             return element.equals(otherValue);
         }
         return otherValue === element;
