@@ -274,7 +274,7 @@ String.prototype.capitalize = function (splitter, joiner) {
             const split = match[0];
             const segment = text.substr(lastStart, index - lastStart);
             segments.push(segment.capitalize());
-            segments.push(joiner || split);
+            segments.push(joiner != null ? joiner : split);
 
             lastStart = index + split.length;
 
@@ -289,5 +289,3 @@ String.prototype.capitalize = function (splitter, joiner) {
         return this[0].toLocaleUpperCase() + this.substr(1);
     }
 };
-
-

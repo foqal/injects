@@ -145,9 +145,20 @@ describe('capitalize', () => {
         it('new lines', () => {
             assert.strictEqual("Hello\nworld".capitalize(/\n/, " "), "Hello World");
         });
+
+        it('join by empty string', () => {
+            assert.strictEqual("Hello world".capitalize(" ", ""), "HelloWorld");
+        });
+
+        it('join by 0', () => {
+            assert.strictEqual("hello world".capitalize(" ", 0), "Hello0World");
+        });
+
+        it('join by false', () => {
+            assert.strictEqual("hello world".capitalize(" ", false), "HellofalseWorld");
+        });
     });
 
 
 
 });
-
