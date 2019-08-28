@@ -248,6 +248,21 @@ describe('sortBy', () => {
             assert.deepEqual(items, [{id: 3, key: 2, count: 10}, {id: 4, key: 2, count: 10}, {id: 2, key: 3, count: 10}, {id: 1, key: 4, count: 1}]);
         });
 
+        it('sort strings', () => {
+            const items = [{id: "a"}, {id: "c"}, {id: "b"}].sortBy();
+            assert.deepEqual(items, [{id: "a"}, {id: "b"}, {id: "c"}]);
+        });
+
+        it('sort strings reverse', () => {
+            const items = [{id: "a"}, {id: "c"}, {id: "b"}].sortByDescending();
+            assert.deepEqual(items, [{id: "c"}, {id: "b"}, {id: "a"}]);
+        });
+
+        it('sort multiple strings', () => {
+            const items = [{id: "a", sub: "b"}, {id: "a", sub: "c"}, {id: "a", sub: "a"}].sortBy("id", "sub");
+            assert.deepEqual(items, [{id: "a", sub: "a"}, {id: "a", sub: "b"}, {id: "a", sub: "c"}]);
+        });
+
     });
 
 });

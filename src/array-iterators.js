@@ -420,12 +420,14 @@ function sort(list, keys, defaultDirection) {
         if (type == "string" || type == "function") {
             return {
                 fetcher: createValueAssigner(key),
-                direction: defaultDirection
+                direction: defaultDirection,
+                oppositeDirection: -1 * defaultDirection
             };
         } else {
             return {
                 fetcher: createValueAssigner(key.key),
-                direction: key.direction
+                direction: key.direction,
+                oppositeDirection: -1 * key.direction
             };
         }
     });
@@ -433,11 +435,20 @@ function sort(list, keys, defaultDirection) {
 
     return list.copy().sort((a, b) => {
         for (let i = 0; i < length; i++) {
-            const {direction, fetcher} = fetchers[i];
-            const value = direction * (fetcher(a) - fetcher(b));
-            if (Math.abs(value) > Number.EPSILON) {
-                return value;
+            const {direction, oppositeDirection, fetcher} = fetchers[i];
+            const left = fetcher(a);
+            const right = fetcher(b);
+            if (typeof left !== "number" || typeof right !== "number") {
+                if (left != right) {
+                    return left > right ? direction : oppositeDirection;
+                }
+            } else {
+                const value = direction * (left - right);
+                if (Math.abs(value) > Number.EPSILON) {
+                    return value;
+                }
             }
+
         }
 
         return 0;
