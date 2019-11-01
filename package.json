@@ -1,8 +1,9 @@
 {
     "name": "native-injects",
-    "version": "2.3.1",
+    "version": "3.0.0",
     "description": "Adds userful array iteration and string manipulation tools to the Array, String, and Object prototype.",
     "main": "src/index.js",
+    "types": "src/index.d.ts",
     "scripts": {
         "start": "npm-run-all --parallel test:watch lint:watch",
         "test": "mocha --require @babel/register --reporter mocha-multi-reporters --reporter-options configFile=test/config.json --recursive",
@@ -10,9 +11,10 @@
         "lint": "esw src tools",
         "lint:watch": "npm run lint -- --watch",
         "clean": "rm -rf build",
-        "prebuild": "npm run clean && mkdir -p build/native-injects && npm-run-all --parallel test lint",
+        "prebuild": "npm run clean && mkdir -p build/native-injects/src && npm-run-all --parallel test lint",
+        "build:types": "cp src/*.d.ts build/native-injects/src",
         "build:app": "babel src -d build/native-injects/src",
-        "build": "npm-run-all --parallel build:app build:package build:copy-files",
+        "build": "npm-run-all build:types --parallel build:app build:package build:copy-files",
         "build:package": "babel-node ./tools/create-package.js",
         "build:copy-files": "cp README.md LICENSE.md build/native-injects",
         "current-version": "node -e 'console.log(process.env.npm_package_version + (process.env.BUILD_VERSION ? `.${process.env.BUILD_VERSION}` : ``))'",
@@ -50,6 +52,7 @@
         "mocha-junit-reporter": "^1.16.0",
         "mocha-multi-reporters": "^1.1.7",
         "nodemon": "^1.17.5",
-        "npm-run-all": "^4.1.2"
+        "npm-run-all": "^4.1.2",
+        "typescript": "^3.6.4"
     }
 }

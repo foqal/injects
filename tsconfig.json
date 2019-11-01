@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "esnext",
+        "declaration": true,
+        "outDir": "build/native-injects/src"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

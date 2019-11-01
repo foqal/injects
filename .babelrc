@@ -5,7 +5,8 @@
             "targets": {
                 "node": "current"
             }
-        }]
+        }],
+        "@babel/preset-typescript"
     ],
     "env": {
         "development": {
@@ -16,4 +17,3 @@
         "transform-proto-to-assign"
     ]
 }
-
