@@ -124,5 +124,45 @@ declare global {
          * @return {String}                         Returns the capitalized string.
          */
         capitalize(splitter?: string|RegExp, joiner?: string): string;
+
+
+
+        /**
+         * Converts a string from regular case to pascal case. This is defined as a string consisting of
+         * each word being capitalized with no spaces. For example "hello world" would become HelloWorld.
+         * @name  toPascalCase
+         * @param  {RegExp|String} splitter How to split. By default will look for spaces and underscores.
+         * @return {string}          The pascal case converted string.
+         */
+        toPascalCase(splitter?: string|RegExp): string;
+
+        /**
+         * Converts a string from regular case to camel case. This is defined as a string consisting of
+         * each word being capitalized with no spaces with first word in lower case.
+         * For example "hello world whats up" would become helloWorldWhatsUp.
+         * @name  toCamelCase
+         * @param  {RegExp|String} splitter How to split. By default will look for spaces and underscores.
+         * @return {string}          The camel case converted string.
+         */
+        toCamelCase(splitter?: string|RegExp): string;
+
+
+        /**
+         * Converts a string to Darwin Case. This is defined as a string with each word capitalized
+         * and all whitespace replaced with an underscore. For example "hello world" would result in "Hello_World".
+         * @param  {RegExp|String} splitter This word or regular expression to split by
+         * @param  {string} joiner   The string to join the words with.
+         * @return {string}          The Darwin cased string.
+         */
+        toDarwinCase(splitter?: string|RegExp, joiner?: string): string;
+
+        /**
+         * Converts a string to snake case. This is defined as a string with each word lower cased
+         * and all whitespace replaced with an underscore. For example "hello world" would result in "hello_world".
+         * @param  {RegExp|String} splitter This word or regular expression to split by
+         * @param  {string} joiner   The string to join the words with.
+         * @return {string}          The Darwin cased string.
+         */
+        toSnakeCase(splitter?: string|RegExp, joiner?: string): string;
     }
 }

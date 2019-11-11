@@ -876,6 +876,66 @@ When rejoining the string you can have it join on a different string all togethe
 ```
 
 
+
+#### toCamelCase()
+Converts a string from regular case to camel case. This is defined as a string consisting of
+each word being capitalized with no spaces with first word in lower case.
+```Javascript
+"hello world".toCamelCase()
+//returns "helloWorld"
+```
+You can also provide your own split string or regular expression
+```Javascript
+"hello|world".toCamelCase("|");
+//returns "helloWorld"
+```
+
+
+#### toPascalCase()
+Converts a string from regular case to pascal case. This is defined as a string consisting of
+each word being capitalized with no spaces.
+```Javascript
+"hello world".toPascalCase()
+//returns "HelloWorld"
+```
+You can also provide your own split string or regular expression
+```Javascript
+"hello|world".toPascalCase("|");
+//returns "HelloWorld"
+```
+
+#### toDarwinCase()
+Converts a string to Darwin Case. This is defined as a string with each word capitalized
+and all whitespace replaced with an underscore. By default the function will look for spaces and
+change in case as a place to insert underscore.
+```Javascript
+"helloWorld".toDarwinCase()
+//returns "Hello_World"
+```
+You can also provide your own split string or regular expression and join string.
+```Javascript
+"hello|world".toDarwinCase("|", "___");
+//returns "Hello___World"
+```
+
+
+#### toSnakeCase()
+Converts a string to snake case. This is defined as a string with each word lower cased
+and all whitespace replaced with an underscore. By default the function will look for spaces and
+change in case as a place to insert underscore.
+```Javascript
+"helloWorld".toDarwinCase()
+//returns "hello_world"
+```
+You can also provide your own split string or regular expression and join string.
+```Javascript
+"hello|world".toDarwinCase("|", "___");
+//returns "hello___world"
+```
+
+
+
+
 ## Date Properties
 Since these are often being calculated and Javascript does not have a good reference to them, we added the constant values in milliseconds of common date values.
 

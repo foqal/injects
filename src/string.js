@@ -289,3 +289,104 @@ String.prototype.capitalize = function (splitter, joiner) {
         return this[0].toLocaleUpperCase() + this.substr(1);
     }
 };
+
+/**
+ * Converts a string from regular case to pascal case. This is defined as a string consisting of
+ * each word being capitalized with no spaces. For example "hello world" would become HelloWorld.
+ * @name  toPascalCase
+ * @param  {RegExp|String} splitter How to split. By default will look for spaces and underscores.
+ * @return {string}          The pascal case converted string.
+ */
+String.prototype.toPascalCase = function(splitter) {
+    return this.capitalize(splitter || /[_\s]+/g, "");
+};
+
+/**
+ * Converts a string from regular case to camel case. This is defined as a string consisting of
+ * each word being capitalized with no spaces with first word in lower case.
+ * For example "hello world whats up" would become helloWorldWhatsUp.
+ * @name  toCamelCase
+ * @param  {RegExp|String} splitter How to split. By default will look for spaces and underscores.
+ * @return {string}          The camel case converted string.
+ */
+String.prototype.toCamelCase = function(splitter) {
+    const text = this.toPascalCase(splitter);
+    if (!text) {
+        return text;
+    }
+    return text[0].toLowerCase() + text.substr(1);
+};
+
+
+/**
+ * Convers as string to darwin or snake case adding underscores between words.
+ * @param  {string} text                       The text to convert
+ * @param  {string|RegExp} splitter            The string or RegExp to use to split the string.
+ * @param  {string} joiner                     The character to use to join the string. Defalts to "_".
+ * @param  {boolean} [shouldCapitalize=false}] If the characters should be capitalized or not (snake vs darwin)
+ * @return {string}                            The converted string
+ */
+function toUnderscoreCase({text, splitter, joiner, shouldCapitalize=false}) {
+    let shouldReplaceCaps = false;
+    if (!splitter) {
+        shouldReplaceCaps = true;
+        splitter = /([a-z][A-Z])|[\s]+/g;
+    } else if (typeof splitter === "string") {
+        splitter = new RegExp(splitter, "g");
+    } else if (!splitter.global) {
+        splitter = new RegExp(splitter.source, splitter.flags + "g");
+    }
+    joiner = joiner != null ? joiner : "_";
+    let match = splitter.exec(text);
+    const segments = [];
+    let lastStart = 0;
+    let lastCapitalized = false;
+    while (match) {
+        const index = match.index;
+        const split = match[0];
+        const segment = text.substr(lastStart, index - lastStart).toLowerCase();
+        const caps = match[1];
+
+        segments.push(!shouldCapitalize || lastCapitalized ? segment : segment.capitalize());
+        if (shouldReplaceCaps && caps && caps.length == 2) {
+            segments.push(caps[0]);
+            segments.push(joiner);
+            segments.push(shouldCapitalize ? caps[1] : caps[1].toLowerCase());
+            lastCapitalized = true;
+        } else {
+            segments.push(joiner);
+            lastCapitalized = false;
+        }
+        lastStart = index + split.length;
+
+        match = splitter.exec(text);
+    }
+
+    if (lastStart >= 0 && lastStart < text.length) {
+        const segment = text.substr(lastStart).toLowerCase();
+        segments.push(!shouldCapitalize || lastCapitalized ? segment : segment.capitalize());
+    }
+    return segments.join("");
+}
+
+/**
+ * Converts a string to Darwin Case. This is defined as a string with each word capitalized
+ * and all whitespace replaced with an underscore. For example "hello world" would result in "Hello_World".
+ * @param  {RegExp|String} splitter This word or regular expression to split by
+ * @param  {string} joiner   The string to join the words with.
+ * @return {string}          The Darwin cased string.
+ */
+String.prototype.toDarwinCase = function(splitter, joiner) {
+    return toUnderscoreCase({text: this, splitter, joiner, shouldCapitalize: true});
+};
+
+/**
+ * Converts a string to snake case. This is defined as a string with each word lower cased
+ * and all whitespace replaced with an underscore. For example "hello world" would result in "hello_world".
+ * @param  {RegExp|String} splitter This word or regular expression to split by
+ * @param  {string} joiner   The string to join the words with.
+ * @return {string}          The Darwin cased string.
+ */
+String.prototype.toSnakeCase = function(splitter, joiner) {
+    return toUnderscoreCase({text: this, splitter, joiner, shouldCapitalize: false});
+};
