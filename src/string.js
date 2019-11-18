@@ -298,7 +298,7 @@ String.prototype.capitalize = function (splitter, joiner) {
  * @return {string}          The pascal case converted string.
  */
 String.prototype.toPascalCase = function(splitter) {
-    return this.capitalize(splitter || /[_\s]+/g, "");
+    return this.toLowerCase().capitalize(splitter || /[_\s]+/g, "");
 };
 
 /**

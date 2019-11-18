@@ -18,8 +18,16 @@ describe('Camel Case', () => {
             assert.strictEqual("Hello".toCamelCase(), "hello");
         });
 
+        it('All capps', () => {
+            assert.strictEqual("HELLO".toCamelCase(), "hello");
+        });
+
         it('2 word', () => {
             assert.strictEqual("hello world".toCamelCase(), "helloWorld");
+        });
+
+        it('All capp multiple', () => {
+            assert.strictEqual("HELLO WORLD".toCamelCase(), "helloWorld");
         });
 
         it('already capitalized', () => {

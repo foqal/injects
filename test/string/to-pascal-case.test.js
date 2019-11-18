@@ -18,8 +18,16 @@ describe('Pascal Case', () => {
             assert.strictEqual("Hello".toPascalCase(), "Hello");
         });
 
+        it('All capps', () => {
+            assert.strictEqual("HELLO".toPascalCase(), "Hello");
+        });
+
         it('2 word', () => {
             assert.strictEqual("hello world".toPascalCase(), "HelloWorld");
+        });
+
+        it('All capp multiple', () => {
+            assert.strictEqual("HELLO WORLD".toPascalCase(), "HelloWorld");
         });
 
         it('already capitalized', () => {

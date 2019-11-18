@@ -883,6 +883,9 @@ each word being capitalized with no spaces with first word in lower case.
 ```Javascript
 "hello world".toCamelCase()
 //returns "helloWorld"
+
+"THE_VARIABLE".toCamelCase()
+//returns "theVariable"
 ```
 You can also provide your own split string or regular expression
 ```Javascript
@@ -897,6 +900,9 @@ each word being capitalized with no spaces.
 ```Javascript
 "hello world".toPascalCase()
 //returns "HelloWorld"
+
+"THE_VARIABLE".toPascalCase()
+//returns "TheVariable"
 ```
 You can also provide your own split string or regular expression
 ```Javascript
@@ -924,12 +930,12 @@ Converts a string to snake case. This is defined as a string with each word lowe
 and all whitespace replaced with an underscore. By default the function will look for spaces and
 change in case as a place to insert underscore.
 ```Javascript
-"helloWorld".toDarwinCase()
+"helloWorld".toSnakeCase()
 //returns "hello_world"
 ```
 You can also provide your own split string or regular expression and join string.
 ```Javascript
-"hello|world".toDarwinCase("|", "___");
+"hello|world".toSnakeCase("|", "___");
 //returns "hello___world"
 ```
 

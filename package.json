@@ -1,6 +1,6 @@
 {
     "name": "native-injects",
-    "version": "3.1.0",
+    "version": "3.1.1",
     "description": "Adds userful array iteration and string manipulation tools to the Array, String, and Object prototype.",
     "main": "src/index.js",
     "types": "src/index.d.ts",
@@ -18,10 +18,10 @@
         "build:package": "babel-node ./tools/create-package.js",
         "build:copy-files": "cp README.md LICENSE.md build/native-injects",
         "current-version": "node -e 'console.log(process.env.npm_package_version + (process.env.BUILD_VERSION ? `.${process.env.BUILD_VERSION}` : ``))'",
-        "next-build-version": "node -e 'var split = process.env.npm_package_version.split(\".\"); console.log(`${split[0]}.${split[1]}.${parseInt(split[2]) + 1}`)'",
+        "next-patch-version": "node -e 'var split = process.env.npm_package_version.split(\".\"); console.log(`${split[0]}.${split[1]}.${parseInt(split[2]) + 1}`)'",
         "next-minor-version": "node -e 'var split = process.env.npm_package_version.split(\".\"); console.log(`${split[0]}.${parseInt(split[1]) + 1}.0`)'",
         "next-major-version": "node -e 'var split = process.env.npm_package_version.split(\".\"); console.log(`${parseInt(split[0]) + 1}.0.0`)'",
-        "build-version-commit": "npm version `npm run --silent next-build-version` --force -a",
+        "patch-version-commit": "npm version `npm run --silent next-patch-version` --force -a",
         "minor-version-commit": "npm version `npm run --silent next-minor-version` --force -a",
         "major-version-commit": "npm version `npm run --silent next-major-version` --force -a"
     },
