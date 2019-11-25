@@ -73,7 +73,7 @@ declare global {
          * @return {Promise}            A promise that will only resolve once all child promises are also
          *                              resolved.
          */
-         forEachConcurrent<TMapped>(callback: (item: T, index: number) => Promise<TMapped>): Promise<void>;
+         forEachPromise<TMapped>(callback: (item: T, index: number) => Promise<TMapped>): Promise<void>;
 
     }
 }
