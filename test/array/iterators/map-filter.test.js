@@ -7,7 +7,7 @@ describe('mapFilter', () => {
 
     it('filter false defaults', () => {
         const items = [0, false, null].mapFilter();
-        assert.deepEqual(items, []);
+        assert.deepEqual(items, [0, false]);
     });
 
     it('no params', () => {

@@ -170,7 +170,8 @@ declare global {
         * @param {Func}        filter      The optional method to check. Default checks for null item.
         * @return {Object[]} The mapped list.
         */
-        filterMap<TResult = T>(mapper?: (item: T) => TResult, filter?: (item: T) => boolean): TResult[];
+        filterMap<TResult = T>(mapper: (item: Exclude<T, undefined | null>) => TResult): TResult[];
+        filterMap<TResult = T>(mapper: (item: T) => TResult, filter: (item: T) => boolean): TResult[];
 
         /**
         * Combines the filter and map operation into a single iteration. First it calls map on an item.
@@ -184,7 +185,8 @@ declare global {
         * @param {Func}        filter      The optional method to check. Default checks for null item.
         * @return {Object[]} The mapped list.
         */
-        mapFilter<TResult = T>(mapper?: (item: T) => TResult, filter?: (item: TResult) => boolean): TResult[];
+        mapFilter<TResult = T>(mapper: (item: T) => TResult): Exclude<TResult, undefined | null>[];
+        mapFilter<TResult = T>(mapper: ((item: T) => TResult), filter: (item: TResult) => boolean): TResult[];
 
 
 

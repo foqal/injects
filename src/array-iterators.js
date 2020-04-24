@@ -250,7 +250,7 @@ Array.prototype.filterMap = function(handler, filter) {
 // @return {Object[]} The mapped list.
 Array.prototype.mapFilter = function(handler, filter) {
     handler = handler || IDENTITY;
-    filter = filter || IDENTITY;
+    filter = filter || IDENTITY_NOT_NULL;
 
     return this.reduce((list, item, index) => {
         const value = handler(item, index);
