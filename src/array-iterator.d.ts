@@ -32,7 +32,9 @@ declare global {
         * @param {String|Func}     value   The optional field or function to extract as the value of the map.
         * @returns {Object}                The map keyed by id.
         */
-        toIdMap<TResult>(key?: NullableValueAssigner<T, string>, value?: NullableValueAssigner<T, TResult>): Record<string, TResult>;
+        toIdMap(key?: keyof T): Record<string, T>;
+        toIdMap<K extends keyof T>(key: NullableValueAssigner<T, string> | undefined | null, value: K): Record<string, T[K]>;
+        toIdMap<TResult>(key: NullableValueAssigner<T, string> | undefined | null, value: ItemCallback<T, TResult>): Record<string, TResult>;
 
 
         /**
@@ -46,7 +48,9 @@ declare global {
         * @param {String|Func}     value   The optional field or function to extract as the value of the array of the map.
         * @returns {Object}                The map having the given key as the id and the value being an array of extracted values.
         */
-        groupBy<TResult>(key?: NullableValueAssigner<T, string>, value?: NullableValueAssigner<T, TResult>): Record<string, TResult[]>;
+        groupBy(key?: NullableValueAssigner<T, string>): Record<string, T[]>;
+        groupBy<K extends keyof T>(key: NullableValueAssigner<T, string> | undefined | null, value: K): Record<string, T[K][]>;
+        groupBy<TResult>(key: NullableValueAssigner<T, string> | undefined | null, value: ItemCallback<T, TResult>): Record<string, TResult[]>;
 
 
         /**
@@ -71,7 +75,9 @@ declare global {
         * @param {String}      key     The name of the id field to fetch for each item.
         * @returns {Object[]}          The list of ids.
         */
-        toIdList<TResult>(key?: NullableValueAssigner<T, TResult>): TResult[];
+        toIdList(): (T extends {id: infer T} ? T : undefined)[];
+        toIdList<K extends keyof T>(key: T): T[K][];
+        toIdList<TResult>(key: ItemCallback<T, TResult>): TResult[];
 
         /**
         * Creates an array of the indexes of items in the list.
@@ -92,6 +98,7 @@ declare global {
         *                                  If method not provided, will keep the first value found.
         * @return {Object[]}               The de-duplicated subset.
         */
+        dedupe(extractor?: (item: T) => string): T[];
         dedupe<TResult>(extractor?: (item: T) => string, combiner?: (left: T, right: T) => TResult): TResult[];
 
 
@@ -103,7 +110,7 @@ declare global {
         * @param {Object[][]} this The list of lists to flatten
         * @return {Object[]} The flattened list
         */
-        flatten<TResult>(): TResult[];
+        flatten(): T[];
 
         /**
         * Takes an array, applies a map operation to it and combines the returning
@@ -163,7 +170,7 @@ declare global {
         * @param {Func}        filter      The optional method to check. Default checks for null item.
         * @return {Object[]} The mapped list.
         */
-        filterMap<TResult>(mapper?: (item: T) => TResult, filter?: (item: T) => boolean): TResult[];
+        filterMap<TResult = T>(mapper?: (item: T) => TResult, filter?: (item: T) => boolean): TResult[];
 
         /**
         * Combines the filter and map operation into a single iteration. First it calls map on an item.
@@ -177,7 +184,7 @@ declare global {
         * @param {Func}        filter      The optional method to check. Default checks for null item.
         * @return {Object[]} The mapped list.
         */
-        mapFilter<TResult>(mapper?: (item: T) => TResult, filter?: (item: TResult) => boolean): TResult[];
+        mapFilter<TResult = T>(mapper?: (item: T) => TResult, filter?: (item: TResult) => boolean): TResult[];
 
 
 
