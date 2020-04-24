@@ -110,7 +110,7 @@ declare global {
         * @param {Object[][]} this The list of lists to flatten
         * @return {Object[]} The flattened list
         */
-        flatten(): T extends (infer A)[] ? A : T;
+        flatten(): T extends (infer A)[] ? A[] : T[];
 
         /**
         * Takes an array, applies a map operation to it and combines the returning
