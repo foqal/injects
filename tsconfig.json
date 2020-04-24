@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "module": "esnext",
-        "target": "esnext",
+        "target": "es2018",
+        "module": "commonjs",
         "declaration": true,
         "outDir": "build/native-injects/src"
     },
