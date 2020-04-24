@@ -32,7 +32,7 @@ declare global {
         * @param {String|Func}     value   The optional field or function to extract as the value of the map.
         * @returns {Object}                The map keyed by id.
         */
-        toIdMap(key?: keyof T): Record<string, T>;
+        toIdMap(key?: NullableValueAssigner<T, string>): Record<string, T>;
         toIdMap<K extends keyof T>(key: NullableValueAssigner<T, string> | undefined | null, value: K): Record<string, T[K]>;
         toIdMap<TResult>(key: NullableValueAssigner<T, string> | undefined | null, value: ItemCallback<T, TResult>): Record<string, TResult>;
 
@@ -76,7 +76,7 @@ declare global {
         * @returns {Object[]}          The list of ids.
         */
         toIdList(): (T extends {id: infer T} ? T : undefined)[];
-        toIdList<K extends keyof T>(key: T): T[K][];
+        toIdList<K extends keyof T>(key: K): T[K][];
         toIdList<TResult>(key: ItemCallback<T, TResult>): TResult[];
 
         /**
