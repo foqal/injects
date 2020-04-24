@@ -287,7 +287,7 @@ declare global {
         * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
         * @return {Object[]}               The subset list.
         */
-        union<TOther, TResult>(other: TOther[], extractor?: ItemCallback<T | TOther, TResult>): TResult[];
+        union<TOther, TResult>(other: TOther[], extractor?: ItemCallback<T | TOther, TResult>): T[];
 
         /**
         * Retuns the list of items that are not in the passed in list.
@@ -298,7 +298,7 @@ declare global {
         * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
         * @return {Object[]}               The subset list.
         */
-        exclude<TOther, TResult>(exclude: TOther[], extractor?: ItemCallback<T | TOther, TResult>): TResult[];
+        exclude<TOther, TResult>(exclude: TOther[], extractor?: ItemCallback<T | TOther, TResult>): T[];
 
 
 

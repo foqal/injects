@@ -1,6 +1,6 @@
 {
     "name": "native-injects",
-    "version": "3.2.11",
+    "version": "3.2.12",
     "description": "Adds userful array iteration and string manipulation tools to the Array, String, and Object prototype.",
     "main": "src/index.js",
     "types": "src/index.d.ts",
