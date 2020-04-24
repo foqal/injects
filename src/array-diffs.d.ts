@@ -14,7 +14,7 @@ declare global {
          * returns
          * > [[1, 2], [3, 4], [5]]
          */
-        split(splitSize: number) : T[];
+        split(splitSize: number) : T[][];
 
         /**
          * Counts the number of times that two consecutive values are not equal.
@@ -54,6 +54,6 @@ declare global {
          * @param  {Number}   maxLookahead  The maximum number of items to look for a equal line if the rows don't match.
          * @return {Array}                 Returns the list of differences.
          */
-        diff<TOther>(right: Array<TOther>, isEqual?: (leftValue: T, rightValue: TOther, leftIndex: number, rightIndex: number) => boolean, maxLookahead?: number): Array<[T, TOther, number, number]>
+        diff<TOther>(right: Array<TOther>, isEqual?: (leftValue: T, rightValue: TOther, leftIndex: number, rightIndex: number) => boolean, maxLookahead?: number): [T, TOther, number, number][];
     }
 }

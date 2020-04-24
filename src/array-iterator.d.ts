@@ -7,14 +7,16 @@ declare global {
         Descending = -1
     }
 
-    type ValueAssigner<T, TResult> = String | ((object: T, index: number) => TResult);
-    type NullableValueAssigner<T, TResult> = String | ((object: T, index: number) => TResult);
+    type ItemCallback<T, TResult> = (object: T, index: number) => TResult;
 
-    interface SortKeyDescriptor {
-        key: String
-        direction: SortDirection
+    type ValueAssigner<T, TResult> = keyof T | ItemCallback<T, TResult>;
+    type NullableValueAssigner<T, TResult> = keyof T | ItemCallback<T, TResult>;
+
+    interface SortKeyDescriptor<T> {
+        key: keyof T;
+        direction: SortDirection;
     }
-    type SortKey<T, TResult> = String | SortKeyDescriptor | NullableValueAssigner<T, TResult>;
+    type SortKey<T, TResult> = keyof T | SortKeyDescriptor<T> | NullableValueAssigner<T, TResult>;
 
     export interface Array<T> {
 
@@ -44,7 +46,7 @@ declare global {
         * @param {String|Func}     value   The optional field or function to extract as the value of the array of the map.
         * @returns {Object}                The map having the given key as the id and the value being an array of extracted values.
         */
-        groupBy<TResult>(key?: NullableValueAssigner<T, string>, value?: NullableValueAssigner<T, TResult>): Record<string, [TResult]>;
+        groupBy<TResult>(key?: NullableValueAssigner<T, string>, value?: NullableValueAssigner<T, TResult>): Record<string, TResult[]>;
 
 
         /**
@@ -78,7 +80,7 @@ declare global {
         * @param {Object[]}    this    The list of items to convert.
         * @returns {Object[]}          The list of indexes.
         */
-        toIndexList(): number [];
+        toIndexList(): number[];
 
         /**
         * Dedupes the current list using an array.
@@ -123,7 +125,7 @@ declare global {
         * @param {Func} handler The method to apply to each item in the list.
         * @return {Object[]} The mapped list.
         */
-        forEachReturned(handler: (item: T) => T): T [];
+        forEachReturned(handler: (item: T) => T): T[];
 
         /**
         * Performs a forEach operation for a subset of the list starting with the given "start"
@@ -185,7 +187,7 @@ declare global {
         * @param {Object[]}    this        The list to filter from
         * @return {Object[]} The filtered list
         */
-        filterFalsy(): T[];
+        filterFalsy(): Exclude<T, undefined | null | false | 0 | "">[];
 
         /**
         * Removes all null elements
@@ -193,7 +195,7 @@ declare global {
         * @param {Object[]}    this        The list to filter from
         * @return {Object[]} The filtered list
         */
-        filterNull(): T[];
+        filterNull(): Exclude<T, undefined | null>[];
 
 
 
@@ -236,7 +238,7 @@ declare global {
         * @param {Func}        predicate   Function to execute on each value in the array.
         * @return {Object}               The found element.
         */
-        findRight(predicate: (item: T, index: number) => boolean): T;
+        findRight(predicate: ItemCallback<T, boolean>): T;
 
         /**
         * Finds the first element's index from the right given a specific predicate.
@@ -246,10 +248,10 @@ declare global {
         * @param {Func}        predicate   Function to execute on each value in the array.
         * @return {Integer}                The found element's index
         */
-        findIndexRight(predicate: (item: T, index: number) => boolean): number;
+        findIndexRight(predicate: ItemCallback<T, boolean>): number;
 
 
-        findComparing<TExtracted>(comparer: (left: TExtracted, right: TExtracted, index: number) => boolean, extractor?: (item: T, index: number) => TExtracted): T;
+        findComparing<TExtracted>(comparer: (left: TExtracted, right: TExtracted, index: number) => boolean, extractor?: ItemCallback<T, TExtracted>): T;
 
 
         findIndexComparing(comparer: (left: T, right: T, index: number) => boolean): number
@@ -266,7 +268,7 @@ declare global {
          *                   returns true, and will stop comparing the value for false.
          * @return           The last item which was had a value of true when in the first parameter.
          */
-        findValueComparing<TExtracted>(comparer: ((left: TExtracted, right: TExtracted, index: number) => boolean) | null, extractor: (item: T, index: number) => TExtracted): TExtracted;
+        findValueComparing<TExtracted>(comparer: ((left: TExtracted, right: TExtracted, index: number) => boolean) | null, extractor: ItemCallback<T, TExtracted>): TExtracted;
 
 
         /**
@@ -278,7 +280,7 @@ declare global {
         * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
         * @return {Object[]}               The subset list.
         */
-        union<TOther, TResult>(other: TOther[], extractor?: (item: T | TOther, index: number) => TResult): Array<TResult>;
+        union<TOther, TResult>(other: TOther[], extractor?: ItemCallback<T | TOther, TResult>): TResult[];
 
         /**
         * Retuns the list of items that are not in the passed in list.
@@ -289,7 +291,7 @@ declare global {
         * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
         * @return {Object[]}               The subset list.
         */
-        exclude<TOther, TResult>(exclude: TOther[], extractor?: (item: T | TOther, index: number) => TResult): Array<TResult>;
+        exclude<TOther, TResult>(exclude: TOther[], extractor?: ItemCallback<T | TOther, TResult>): TResult[];
 
 
 
@@ -333,7 +335,7 @@ declare global {
         * @param  {Function} extractor The optional handler to call on each item.
         * @return {Array}              The copied list.
         */
-        copy<TResult>(extractor?: (item: T, index: number) => TResult): TResult[];
+        copy<TResult>(extractor?: ItemCallback<T, TResult>): TResult[];
 
         /**
         * Checks whether the current array and the given array are equals by comparing pairwise equality.

@@ -7,13 +7,13 @@ declare global {
 
     export interface Array<T> {
 
-        max<TExtract>(comparer?: (left: TExtract, right: TExtract,  index: number) => boolean, extractor?: (item: T, index: number) => TExtract): T;
+        max<TExtract>(comparer?: (left: TExtract, right: TExtract,  index: number) => boolean, extractor?: ItemCallback<T, TExtract>): T;
 
-        maxValue<TExtract>(extractor: (item: T, index: number) => TExtract): TExtract;
+        maxValue<TExtract>(extractor: ItemCallback<T, TExtract>): TExtract;
 
-        min<TExtract>(comparer?: (left: TExtract, right: TExtract,  index: number) => boolean, extractor?: (item: T, index: number) => TExtract): T;
+        min<TExtract>(comparer?: (left: TExtract, right: TExtract,  index: number) => boolean, extractor?: ItemCallback<T, TExtract>): T;
 
-        minValue<TExtract>(extractor: (item: T, index: number) => TExtract): TExtract;
+        minValue<TExtract>(extractor: ItemCallback<T, TExtract>): TExtract;
 
 
 
@@ -24,22 +24,22 @@ declare global {
         // @param {Object[]}        this     The list to iterate
         // @param {Function}        handler  Will take the element and index and return true if to include in the count.
         // @return {Number}                  The number of items matching the condition
-        count(handler?: (item: T, index: number) => boolean): number;
+        count(handler?: ItemCallback<T, boolean>): number;
 
 
-        sum(extractor?: (item: T, index: number) => number): number;
+        sum(extractor?: ItemCallback<T, number>): number;
 
 
-        product(extractor?: (item: T, index: number) => number): number;
+        product(extractor?: ItemCallback<T, number>): number;
 
 
-        average(extractor?: (item: T, index: number) => number): number;
+        average(extractor?: ItemCallback<T, number>): number;
 
 
-        median(extractor?: (item: T, index: number) => number): number;
+        median(extractor?: ItemCallback<T, number>): number;
 
 
-        variance(extractor?: (item: T, index: number) => number): number;
+        variance(extractor?: ItemCallback<T, number>): number;
 
 
 

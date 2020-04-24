@@ -24,7 +24,7 @@ declare global {
          *                                     list of items that were returned from each async
          *                                     handler call.
          */
-        mapConcurrent<TMapped>(callback: (item: T, index: number) => Promise<TMapped>, concurrency?: number): Promise<Array<TMapped>>;
+        mapConcurrent<TMapped>(callback: ItemCallback<T, Promise<TMapped>>, concurrency?: number): Promise<Array<TMapped>>;
 
         /**
          * For the given list, will call the async callback handler one at a time to process
@@ -37,7 +37,7 @@ declare global {
          *                              by the async callback. The result is the array of results from
          *                              each asynch callback.
          */
-        mapPromise<TMapped>(callback: (item: T, index: number) => Promise<TMapped>): Promise<Array<TMapped>>;
+        mapPromise<TMapped>(callback: ItemCallback<T, Promise<TMapped>>): Promise<Array<TMapped>>;
 
 
         /**
@@ -59,7 +59,7 @@ declare global {
          * @return {Promise}                   A promise that will only resolve once all child promises are also
          *                                     resolved.
          */
-        forEachConcurrent<TMapped>(callback: (item: T, index: number) => Promise<TMapped>, concurrency?: number): Promise<void>;
+        forEachConcurrent(callback: ItemCallback<T, Promise<void>>, concurrency?: number): Promise<void>;
 
 
 
@@ -73,7 +73,7 @@ declare global {
          * @return {Promise}            A promise that will only resolve once all child promises are also
          *                              resolved.
          */
-         forEachPromise<TMapped>(callback: (item: T, index: number) => Promise<TMapped>): Promise<void>;
+         forEachPromise(callback: ItemCallback<T, Promise<void>>): Promise<void>;
 
     }
 }
