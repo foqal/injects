@@ -8,7 +8,7 @@ const SORT_DIRECTION = {
     //Gets multiplied by the difference when sorting to sort in descending order
     DESCENDING: -1
 };
-exports.SortDirection = SORT_DIRECTION;
+export const SortDirection = SORT_DIRECTION;
 
 
 // Given a value, will return a function. This function, when passed an object, will extract the value.
@@ -19,7 +19,7 @@ exports.SortDirection = SORT_DIRECTION;
 // @param  {Object}          defaultValue   The default to use when value is null.
 // @return {Function}       A function which extracts a field from a given object.
 function createValueAssigner(value, defaultValue=IDENTITY) {
-    if (!value) {
+    if (value == null) {
         value = defaultValue;
     }
 
@@ -29,8 +29,25 @@ function createValueAssigner(value, defaultValue=IDENTITY) {
     return value;
 }
 
+/**
+ * Uses the regular extractor and tries to convert the value to a string using existing functions.
+ * @param {Function | string} extractor
+ * @param {Function | string} defaultValue
+ */
+function toStringValueExtractor(extractor, defaultValue=IDENTITY) {
+    const valueExtractor =  createValueAssigner(extractor, defaultValue);
+    return (value, index) => {
+        const extracted = valueExtractor(value, index);
+        if (typeof extracted === "object") {
+            const hasToPrimitive = extracted[Symbol.toPrimitive] || (typeof extracted.toString === "function" && extracted.toString != Object.prototype.toString);
+            return hasToPrimitive ? (extracted + "") : extracted;
+        }
+        return extracted;
+    };
+}
 
-// Creates an array of items into a map keyed my id
+
+// Creates an array of items into a map keyed by id
 //
 // `[{id, name}]` to `{id: {id, name}}`
 // @method createIdMap
@@ -39,8 +56,8 @@ function createValueAssigner(value, defaultValue=IDENTITY) {
 //                                  to extract the key from the current item.
 // @param {String|Func}     value   The optional field or function to extract as the value of the map.
 // @returns {Object}                The map keyed by id.
-Array.prototype.toIdMap = function(key="id", value=null) {
-    const keyFetcher = createValueAssigner(key, "id");
+Array.prototype.toIdMap = function(key="id", value) {
+    const keyFetcher = toStringValueExtractor(key, "id");
     const assigner = createValueAssigner(value);
     return this.reduce((aggregator, item, index) => {
         const itemKey = keyFetcher(item, index);
@@ -84,7 +101,7 @@ Array.prototype.groupBy = function(key="id", value=null) {
 //                                  to extract the key from the current item.
 // @returns {Object}                The map having the given key as the id and the value being the count of times this value appears.
 Array.prototype.distribution = function(key="id") {
-    return this.toIdMap(key, (item, current) => {
+    return this.toIdMap(key, (_item, current) => {
         current = (current || 0) + 1;
         return current;
     });
@@ -124,9 +141,8 @@ Array.prototype.toIndexList = function() {
 // @return {Object[]}               The de-duplicated subset.
 Array.prototype.dedupe = function(extractor, combiner) {
 
-    if (!extractor) {
-        extractor = IDENTITY;
-    }
+    const extract = toStringValueExtractor(extractor, IDENTITY);
+
     if (!combiner) {
         combiner = IDENTITY;
     }
@@ -134,11 +150,10 @@ Array.prototype.dedupe = function(extractor, combiner) {
     const set = Object.create(null);
     const newList = [];
     this.forEach(item => {
-        const value = extractor(item);
+        const value = extract(item);
         const previousIndex = set[value];
         if (previousIndex != null) {
             newList[previousIndex] = combiner(newList[previousIndex], item);
-
         } else {
             set[value] = newList.length;
             newList.push(item);
@@ -193,7 +208,7 @@ Array.prototype.forEachReturned = function(handler) {
 // Performs a forEach operation for a subset of the list starting with the given "start"
 // index and continuing for the given length.
 //
-// @method offsetMap
+// @method offsetForEach
 // @param  {Number}     start       The index of where to start the map operation.
 // @param  {Number}     length      The number of items to map.
 // @param  {Function}   handler     The handler that will be called with each item in the map.
@@ -226,8 +241,8 @@ Array.prototype.offsetForEach = function(start, length, handler) {
 // @param {Func}        filter      The optional method to check. Default checks for null item.
 // @return {Object[]} The mapped list.
 Array.prototype.filterMap = function(handler, filter) {
-    handler = handler || IDENTITY;
-    filter = filter || IDENTITY;
+    handler = createValueAssigner(handler);
+    filter = createValueAssigner(filter);
 
     return this.reduce((list, item, index) => {
         if (filter(item, index)) {
@@ -249,8 +264,8 @@ Array.prototype.filterMap = function(handler, filter) {
 // @param {Func}        filter      The optional method to check. Default checks for null item.
 // @return {Object[]} The mapped list.
 Array.prototype.mapFilter = function(handler, filter) {
-    handler = handler || IDENTITY;
-    filter = filter || IDENTITY_NOT_NULL;
+    handler = createValueAssigner(handler);
+    filter = createValueAssigner(filter, IDENTITY_NOT_NULL);
 
     return this.reduce((list, item, index) => {
         const value = handler(item, index);
@@ -291,7 +306,7 @@ Array.prototype.filterNull = function() {
 //                               Each item returned by the handler will be returned in the resulting map.
 // @return {Array}                  The processed sublist of size (length - start) with the processed sub list.
 Array.prototype.offsetMap = function(start, length, handler) {
-    handler = handler || IDENTITY;
+    handler = createValueAssigner(handler);
     if (start == null || start < 0) {
         start = 0;
     }
@@ -370,7 +385,6 @@ Array.prototype.findIndexRight = function(predicate) {
     }
 };
 
-
 // Returns a list of items that appear in both this list and the passed in list.
 //
 // @method union
@@ -379,8 +393,8 @@ Array.prototype.findIndexRight = function(predicate) {
 // @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
 // @return {Object[]}               The subset list.
 Array.prototype.union = function (other, extractor=IDENTITY) {
-    const valueExtractor = createValueAssigner(extractor);
-    const otherSet = new Set(other.map(valueExtractor));
+    const valueExtractor = toStringValueExtractor(extractor);
+    const otherSet = new Set(other.map((value, index) => valueExtractor(value, index)));
     return this.filter((item, index) => otherSet.has(valueExtractor(item, index)));
 };
 
@@ -392,8 +406,8 @@ Array.prototype.union = function (other, extractor=IDENTITY) {
 // @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
 // @return {Object[]}               The subset list.
 Array.prototype.exclude = function (exclude, extractor=IDENTITY) {
-    const valueExtractor = createValueAssigner(extractor);
-    const excludeSet = new Set(exclude.map(valueExtractor));
+    const valueExtractor = toStringValueExtractor(extractor);
+    const excludeSet = new Set(exclude.map((value, index) => valueExtractor(value, index)));
     return this.filter((item, index) => !excludeSet.has(valueExtractor(item, index)));
 };
 
@@ -509,9 +523,7 @@ Array.prototype.findComparing = function (comparer, extractor) {
         return null;
     }
 
-    if (!extractor) {
-        extractor = IDENTITY;
-    }
+    extractor = createValueAssigner(extractor);
 
     let value = this.firstElement;
     let extracted = extractor(value);
@@ -537,7 +549,8 @@ Array.prototype.findValueComparing = function (extractor, comparer) {
     if (this.isEmpty) {
         return null;
     }
-    extractor = extractor || IDENTITY;
+    extractor = createValueAssigner(extractor);
+
     return this.reduce((last, current, index) => {
         const currentValue = extractor(current, index);
         if (index == 0) {

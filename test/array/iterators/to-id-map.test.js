@@ -1,5 +1,7 @@
 import assert from 'assert';
 import '../../../src';
+import {TestObject} from "./test-object";
+
 
 describe('toIdMap', () => {
 
@@ -11,6 +13,21 @@ describe('toIdMap', () => {
     it('string key', () => {
         const map = [{key: 1}, {key: 2}, {key: 3}].toIdMap("key");
         assert.deepEqual(map, {1: {key: 1}, 2: {key: 2}, 3: {key: 3}});
+    });
+
+    it('object key', () => {
+        const first = new TestObject(1);
+        const second = new TestObject(2);
+        const map = [first, second].toIdMap(a => a);
+        assert.deepEqual(map, {1: first, 2: second});
+    });
+
+
+    it('object poiting key', () => {
+        const first = new TestObject(1);
+        const second = new TestObject(2);
+        const map = [{key: first}, {key: second}].toIdMap("key");
+        assert.deepEqual(map, {1: {key: first}, 2: {key: second}});
     });
 
     it('function key', () => {
@@ -43,7 +60,7 @@ describe('toIdMap', () => {
 
     it('string value', () => {
         const map = [{id: 1}, {id: 2}, {id: 3}].toIdMap(null, "id");
-        assert.deepEqual(map, {1: 1, 2:2, 3:3});
+        assert.deepEqual(map, {1: 1, 2: 2, 3: 3});
     });
 
     it('function value', () => {

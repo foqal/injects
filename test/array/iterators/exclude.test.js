@@ -1,5 +1,6 @@
 import assert from 'assert';
 import '../../../src';
+import { TestObject } from './test-object';
 
 describe('exclude', () => {
     it('empty', () => {
@@ -60,6 +61,12 @@ describe('exclude', () => {
     it('string extractor', () => {
         const items = [{id: 1}, {id: 2}, {id: 3}].exclude([{id: 1}, {id: 2}], "id");
         assert.deepEqual(items, [{id: 3}]);
+    });
+
+
+    it('with object to strings', () => {
+        const items = [new TestObject(1), new TestObject(2)].exclude([new TestObject(2), new TestObject(3)]);
+        assert.deepEqual(items, [new TestObject(1)]);
     });
 
 });

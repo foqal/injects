@@ -1,6 +1,6 @@
 import assert from 'assert';
 import '../../../src';
-
+import {TestObject} from "./test-object";
 
 describe('filterMap', () => {
 
@@ -29,6 +29,16 @@ describe('filterMap', () => {
     it('default map', () => {
         const items = ['a', 'b', 'c', 'd'].filterMap(null, a => a != 'a');
         assert.deepEqual(items, ['b', 'c', 'd']);
+    });
+
+    it('string extractor', () => {
+        const items = [{a: 1}, {a: 2}, {a: 3}].filterMap("a");
+        assert.deepEqual(items, [1, 2, 3]);
+    });
+
+    it('string filter', () => {
+        const items = [{a: 1}, {a: 2}, {c: 3}].filterMap(null, "a");
+        assert.deepEqual(items, [{a: 1}, {a: 2}]);
     });
 
     it('values', () => {

@@ -11,6 +11,7 @@ declare global {
 
     type ValueAssigner<T, TResult> = keyof T | ItemCallback<T, TResult>;
     type NullableValueAssigner<T, TResult> = keyof T | ItemCallback<T, TResult>;
+    type NullableKeyValueAssigner<TKey, TValue, TResult> = keyof TKey | ItemCallback<TValue, TResult>;
 
     interface SortKeyDescriptor<T> {
         key: keyof T;
@@ -98,7 +99,7 @@ declare global {
         *                                  If method not provided, will keep the first value found.
         * @return {Object[]}               The de-duplicated subset.
         */
-        dedupe(extractor?: (item: T) => string): T[];
+        dedupe(extractor?: NullableValueAssigner<T, string>): T[];
         dedupe<TResult>(extractor?: (item: T) => string, combiner?: (left: T, right: T) => TResult): TResult[];
 
 
@@ -156,7 +157,7 @@ declare global {
         *                               Each item returned by the handler will be returned in the resulting map.
         * @return {Array}                  The processed sublist of size (length - start) with the processed sub list.
         */
-        offsetMap(start: number | null, length: number | null, handler: (item: T) => T): T[];
+        offsetMap<TResult>(start: number | null, length: number | null, handler: NullableValueAssigner<T, TResult>): TResult[];
 
         /**
         * Combines the filter and map operation into a single iteration. First tests the filter. If the filter
@@ -170,8 +171,8 @@ declare global {
         * @param {Func}        filter      The optional method to check. Default checks for null item.
         * @return {Object[]} The mapped list.
         */
-        filterMap<TResult = T>(mapper: (item: Exclude<T, undefined | null>) => TResult): TResult[];
-        filterMap<TResult = T>(mapper: (item: T) => TResult, filter: (item: T) => boolean): TResult[];
+        filterMap<TResult = T>(mapper: NullableValueAssigner<Exclude<T, undefined | null>, TResult>): TResult[];
+        filterMap<TResult = T>(mapper: NullableValueAssigner<T, TResult>, filter: NullableValueAssigner<T, boolean>): TResult[];
 
         /**
         * Combines the filter and map operation into a single iteration. First it calls map on an item.
@@ -185,8 +186,8 @@ declare global {
         * @param {Func}        filter      The optional method to check. Default checks for null item.
         * @return {Object[]} The mapped list.
         */
-        mapFilter<TResult = T>(mapper: (item: T) => TResult): Exclude<TResult, undefined | null>[];
-        mapFilter<TResult = T>(mapper: ((item: T) => TResult), filter: (item: TResult) => boolean): TResult[];
+        mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>): Exclude<TResult, undefined | null>[];
+        mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>, filter: NullableValueAssigner<T, boolean>): TResult[];
 
 
 
@@ -260,7 +261,7 @@ declare global {
         findIndexRight(predicate: ItemCallback<T, boolean>): number;
 
 
-        findComparing<TExtracted>(comparer: (left: TExtracted, right: TExtracted, index: number) => boolean, extractor?: ItemCallback<T, TExtracted>): T;
+        findComparing<TExtracted>(comparer: (left: TExtracted, right: TExtracted, index: number) => boolean, extractor?: NullableValueAssigner<T, TExtracted>): T;
 
 
         findIndexComparing(comparer: (left: T, right: T, index: number) => boolean): number
@@ -277,7 +278,7 @@ declare global {
          *                   returns true, and will stop comparing the value for false.
          * @return           The last item which was had a value of true when in the first parameter.
          */
-        findValueComparing<TExtracted>(comparer: ((left: TExtracted, right: TExtracted, index: number) => boolean) | null, extractor: ItemCallback<T, TExtracted>): TExtracted;
+        findValueComparing<TExtracted>(comparer: ((left: TExtracted, right: TExtracted, index: number) => boolean) | null, extractor: NullableValueAssigner<T, TExtracted>): TExtracted;
 
 
         /**
@@ -289,7 +290,7 @@ declare global {
         * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
         * @return {Object[]}               The subset list.
         */
-        union<TOther, TResult>(other: TOther[], extractor?: ItemCallback<T | TOther, TResult>): T[];
+        union<TOther, TResult>(other: TOther[], extractor?: NullableKeyValueAssigner<T & TOther, T | TOther, TResult>): T[];
 
         /**
         * Retuns the list of items that are not in the passed in list.
@@ -300,7 +301,7 @@ declare global {
         * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
         * @return {Object[]}               The subset list.
         */
-        exclude<TOther, TResult>(exclude: TOther[], extractor?: ItemCallback<T | TOther, TResult>): T[];
+        exclude<TOther, TResult>(exclude: TOther[], extractor?: NullableKeyValueAssigner<T & TOther, T | TOther, TResult>): T[];
 
 
 

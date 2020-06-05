@@ -1,5 +1,6 @@
 import assert from 'assert';
 import '../../../src';
+import {TestObject} from "./test-object";
 
 
 describe('dedupe', () => {
@@ -31,6 +32,19 @@ describe('dedupe', () => {
     it('extractor keeps first', () => {
         assert.deepEqual([{v: 1, a: 1}, {v: 2, a: 2}, {v:1, a: 3}].dedupe(value => value.v), [{v: 1, a: 1}, {v: 2, a: 2}]);
     });
+
+    it('string extractor', () => {
+        assert.deepEqual([{v: 1}, {v: 2}, {v:1}].dedupe("v"), [{v: 1}, {v: 2}]);
+    });
+
+    it('objects extractor', () => {
+        const first = new TestObject(1);
+        const second = new TestObject(2);
+        const third = new TestObject(1);
+
+        assert.deepEqual([first, second, third].dedupe(), [first, second]);
+    });
+
 
     it('combiner not called when no duplicates', () => {
         let called = false;

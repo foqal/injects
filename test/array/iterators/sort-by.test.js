@@ -1,7 +1,6 @@
 import assert from 'assert';
 import {SortDirection} from '../../../src';
 
-
 describe('sortBy', () => {
     describe('Single Key', () => {
 

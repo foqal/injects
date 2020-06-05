@@ -1,5 +1,6 @@
 import assert from 'assert';
 import '../../../src';
+import {TestObject} from "./test-object";
 
 describe('union', () => {
     it('empty', () => {
@@ -68,6 +69,11 @@ describe('union', () => {
     it('string extractor', () => {
         const items = [{id: 1}, {id: 2}, {id: 3}].union([{id: 1}, {id: 2}], "id");
         assert.deepEqual(items, [{id: 1}, {id: 2}]);
+    });
+
+    it('with object to strings', () => {
+        const items = [new TestObject(1), new TestObject(2)].union([new TestObject(2), new TestObject(3)]);
+        assert.deepEqual(items, [new TestObject(2)]);
     });
 
 });

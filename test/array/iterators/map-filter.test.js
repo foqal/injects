@@ -20,6 +20,16 @@ describe('mapFilter', () => {
         assert.deepEqual(items, ['a', 'b']);
     });
 
+    it('string extractor', () => {
+        const items = [{a: 1}, {a: 2}, {a: 3}].mapFilter("a");
+        assert.deepEqual(items, [1, 2, 3]);
+    });
+
+    it('string filter', () => {
+        const items = [{a: 1}, {a: 2}, {c: 3}].mapFilter(null, "a");
+        assert.deepEqual(items, [{a: 1}, {a: 2}]);
+    });
+
     it('maps to null', () => {
         const items = ['a', 'b', 'c', 'd'].mapFilter(() => null);
         assert.deepEqual(items, []);
