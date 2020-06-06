@@ -187,7 +187,7 @@ declare global {
         * @return {Object[]} The mapped list.
         */
         mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>): Exclude<TResult, undefined | null>[];
-        mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>, filter: NullableValueAssigner<T, boolean>): TResult[];
+        mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>, filter: NullableValueAssigner<TResult, boolean>): TResult[];
 
 
 
