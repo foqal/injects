@@ -19,12 +19,12 @@ declare global {
         /**
          * Uses a RegExp to find matches in a string and returns those as a list of symbols. Additionally returns a
          * new text value which is the text after removing the symbols.
-         * @param  {RegExp} regexp       The regex to use to extract matches.
-         * @param  {Object} options      Additional options to replace and match indexes.
-         * @param  {Number} options.matchIndex   Once a match is found, uses this RegExp group index in the match to add to the
+         * @param	regexp       The regex to use to extract matches.
+         * @param	options      Additional options to replace and match indexes.
+         * @param	options.matchIndex   Once a match is found, uses this RegExp group index in the match to add to the
          *                               symbols list. By default this is set to the first index.
-         * @param  {Number} options.replaceIndex Once a match is found, this RegExp group is removed from the original text.
-         * @return {Object}              Returns an object containing a symbols list of items extracted and a new text
+         * @param	options.replaceIndex Once a match is found, this RegExp group is removed from the original text.
+         * @returns	Returns an object containing a symbols list of items extracted and a new text
          *                               string with the matched values removed.
          */
         extractSymbolsWithRegExp(regexp: RegExp, options?: ExtractSymbolOptions): ExtractSymbolResult;
@@ -37,12 +37,12 @@ declare global {
          * "hello world\nhow are you".createBlurb(13)` will return `"hello world..."`
          *
          * @method createBlurb
-         * @param  {Number} length      The max length of the blurb. The final length might be up to 3
+         * @param	length      The max length of the blurb. The final length might be up to 3
          *                              characters more (...) than this length.
-         * @param  {Number} minBlurb    If when creating a blurb, the text finds a new line, it will automatically
+         * @param	minBlurb    If when creating a blurb, the text finds a new line, it will automatically
          *                              stop there. If you give a minBlurb, then it will keep going and include
          *                              new lines until reaching a min blurb length.
-         * @return {String}             The shortened version of the string.
+         * @returns	The shortened version of the string.
          */
         createBlurb(length?: number, minBlurb?: number): string;
 
@@ -53,9 +53,9 @@ declare global {
          * `"hello world\nhow are you\nI am good".createBlurbSingleLine(25)` will return `""hello world. how are you..."`
          *
          * @method createBlurb
-         * @param  {Number} length      The max length of the blurb. The final length might be up to 3
+         * @param	length      The max length of the blurb. The final length might be up to 3
          *                              characters more (...) than this length.
-         * @return {String}             The shortened version of the string.
+         * @returns	The shortened version of the string.
          */
         createBlurbSingleLine(length?: number): string;
 
@@ -65,11 +65,11 @@ declare global {
          * look for one of the characters in a set or a matching regex.
          *
          * @name  indexOfWithSet
-         * @param  {Set|RegExp|String}  characterSet This can be either a Set of characters which will look for a match,
+         * @param	characterSet This can be either a Set of characters which will look for a match,
          *                                           a RegExp which will be used to test, or a string which will look for
          *                                           an exact match.
-         * @param  {Number}             end          The last place where to start looking for a matching character.
-         * @return {Number}                          Returns the location of one of the matching characters or -1 if not found.
+         * @param	end          The last place where to start looking for a matching character.
+         * @returns	Returns the location of one of the matching characters or -1 if not found.
          */
         indexOfWithSet(characterSet: string | RegExp | Set<String>, start?: number): number;
 
@@ -80,11 +80,11 @@ declare global {
          * look for one of the characters in a set or a matching regex.
          *
          * @name  lastIndexOfWithSet
-         * @param  {Set|RegExp|String}  characterSet This can be either a Set of characters which will look for a match,
+         * @param	characterSet This can be either a Set of characters which will look for a match,
          *                                           a RegExp which will be used to test, or a string which will look for
          *                                           an exact match.
-         * @param  {Number}             end          The last place where to start looking for and interating to 0.
-         * @return {Number}                          Returns the location of one of the matching characters or -1 if not found.
+         * @param	end          The last place where to start looking for and interating to 0.
+         * @returns	Returns the location of one of the matching characters or -1 if not found.
          */
          lastIndexOfWithSet(characterSet: string | RegExp | Set<String>, end?: number): number;
 
@@ -96,14 +96,14 @@ declare global {
          * two newlines and will insert paragraphPadding.
          *
          * @name justify
-         * @param  {Number} width               The max length of a single line of text.
-         * @param  {String} textPadding         This padding text will be inserted before each line.
-         * @param  {String} paragraphPadding    This padding text will be inserted before each paragraph. If not explicitly set,
+         * @param	width               The max length of a single line of text.
+         * @param	textPadding         This padding text will be inserted before each line.
+         * @param	paragraphPadding    This padding text will be inserted before each paragraph. If not explicitly set,
          *                                      will default to textPadding.
-         * @param  {Number} paragraphLineWidth   This is the width to use for the first line in a paragraph. If not set,
+         * @param	paragraphLineWidth   This is the width to use for the first line in a paragraph. If not set,
          *                                      will default to regular width.
 
-         * @return {String}                     The cut string rejoined with new lines and padding.
+         * @returns	The cut string rejoined with new lines and padding.
          */
         justify(width: number, textPadding?: string, paragraphPadding?: string, paragraphLineWidth?: number): string;
 
@@ -119,9 +119,9 @@ declare global {
          * and the joiner is "-", the final result will be "Hello-World".
          *
          * @name  capitalize
-         * @param  {RegExp|String}  splitter        The string or RegExp used to split up the string before capitalizing.
-         * @param  {String}         joiner          The string to join the expression after capitalizing.
-         * @return {String}                         Returns the capitalized string.
+         * @param	splitter        The string or RegExp used to split up the string before capitalizing.
+         * @param	joiner          The string to join the expression after capitalizing.
+         * @returns	Returns the capitalized string.
          */
         capitalize(splitter?: string|RegExp, joiner?: string): string;
 
@@ -131,8 +131,8 @@ declare global {
          * Converts a string from regular case to pascal case. This is defined as a string consisting of
          * each word being capitalized with no spaces. For example "hello world" would become HelloWorld.
          * @name  toPascalCase
-         * @param  {RegExp|String} splitter How to split. By default will look for spaces and underscores.
-         * @return {string}          The pascal case converted string.
+         * @param	splitter How to split. By default will look for spaces and underscores.
+         * @returns	The pascal case converted string.
          */
         toPascalCase(splitter?: string|RegExp): string;
 
@@ -141,8 +141,8 @@ declare global {
          * each word being capitalized with no spaces with first word in lower case.
          * For example "hello world whats up" would become helloWorldWhatsUp.
          * @name  toCamelCase
-         * @param  {RegExp|String} splitter How to split. By default will look for spaces and underscores.
-         * @return {string}          The camel case converted string.
+         * @param	splitter How to split. By default will look for spaces and underscores.
+         * @returns	The camel case converted string.
          */
         toCamelCase(splitter?: string|RegExp): string;
 
@@ -150,18 +150,18 @@ declare global {
         /**
          * Converts a string to Darwin Case. This is defined as a string with each word capitalized
          * and all whitespace replaced with an underscore. For example "hello world" would result in "Hello_World".
-         * @param  {RegExp|String} splitter This word or regular expression to split by
-         * @param  {string} joiner   The string to join the words with.
-         * @return {string}          The Darwin cased string.
+         * @param	splitter This word or regular expression to split by
+         * @param	joiner   The string to join the words with.
+         * @returns	The Darwin cased string.
          */
         toDarwinCase(splitter?: string|RegExp, joiner?: string): string;
 
         /**
          * Converts a string to snake case. This is defined as a string with each word lower cased
          * and all whitespace replaced with an underscore. For example "hello world" would result in "hello_world".
-         * @param  {RegExp|String} splitter This word or regular expression to split by
-         * @param  {string} joiner   The string to join the words with.
-         * @return {string}          The Darwin cased string.
+         * @param	splitter This word or regular expression to split by
+         * @param	joiner   The string to join the words with.
+         * @returns	The Darwin cased string.
          */
         toSnakeCase(splitter?: string|RegExp, joiner?: string): string;
     }

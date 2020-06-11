@@ -21,9 +21,9 @@ declare global {
         // are not falsy.
         //
         // @method count
-        // @param {Object[]}        this     The list to iterate
-        // @param {Function}        handler  Will take the element and index and return true if to include in the count.
-        // @return {Number}                  The number of items matching the condition
+        // @param	this     The list to iterate
+        // @param	handler  Will take the element and index and return true if to include in the count.
+        // @returns	The number of items matching the condition
         count(handler?: ItemCallback<T, boolean>): number;
 
 
@@ -49,10 +49,10 @@ declare global {
          * Returns all permutations of a given size.
          *
          * @method permutations
-         * @param  {Number}         size     The maximum size of a permutation.
-         * @param  {Object}         options  If repeating is provided and is true, allows
+         * @param	size     The maximum size of a permutation.
+         * @param	options  If repeating is provided and is true, allows
          *                                   repeating permutations.
-         * @return {Array[]}          Array of
+         * @returns	Array of
          */
         permutations(size: number, options?: PermutationOptions): Array<Array<T>>;
 
@@ -61,9 +61,9 @@ declare global {
         //
         // Modified from https://gist.github.com/axelpale/3118596
         // @method combinations
-        // @param {Object[]}        this    The list of items to create combinations from.
-        // @param {Integer}         combinationSize     The name of the id field to fetch and aggregate by.
-        // @returns {Object}                The map keyed by id.
+        // @param	this    The list of items to create combinations from.
+        // @param	combinationSize     The name of the id field to fetch and aggregate by.
+        // @returns The map keyed by id.
         combinations(combinationSize: number): Array<Array<T>>;
     }
 }

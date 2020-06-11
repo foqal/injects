@@ -7,8 +7,8 @@ declare global {
         /**
          * Takes a list and creates sub-lists where the max size is no greater than splitSize.
          * @method split
-         * @param  {Number}         splitSize   The max sub list size to return.
-         * @return {Array[]}             An array of sub-lists of size [splitSize].
+         * @param	splitSize   The max sub list size to return.
+         * @returns	An array of sub-lists of size [splitSize].
          * @example
          * > [1,2,3,4,5].split(2)
          * returns
@@ -19,10 +19,10 @@ declare global {
         /**
          * Counts the number of times that two consecutive values are not equal.
          * @method switches
-         * @param  {Function}   comparer  A method that given a left value, right value
+         * @param	comparer  A method that given a left value, right value
          *                                and current index should return if left and right are
          *                                cosidered equal.
-         * @return {Number}               The number of times that two values change.
+         * @returns	The number of times that two values change.
          * @example
          * > [1, 1, 2, 2, 2, 2, 3, 3].switches((a, b) => a == b);
          * returns
@@ -33,9 +33,9 @@ declare global {
         /**
          * Counts the number of differences between the current list and a given second list.
          * @method countDiffs
-         * @param  {Array}    other   The second list to compare to.
-         * @param  {Function} compare The handler which determines if two items are equal or not.
-         * @return {Number}           Returns the number of different items between two lists.
+         * @param	other   The second list to compare to.
+         * @param	compare The handler which determines if two items are equal or not.
+         * @returns	Returns the number of different items between two lists.
          */
         countDiffs<TOther>(other: Array<TOther>, compare?: (left: T, right: TOther) => number): number;
 
@@ -49,10 +49,10 @@ declare global {
          *  * rightIndex - The index in the right list.
          *
          * @method diff
-         * @param  {Array}    right         The second list to diff against
-         * @param  {Function} isEqual       The handler which takes the values and should return if they are equal or not.
-         * @param  {Number}   maxLookahead  The maximum number of items to look for a equal line if the rows don't match.
-         * @return {Array}                 Returns the list of differences.
+         * @param	right         The second list to diff against
+         * @param	isEqual       The handler which takes the values and should return if they are equal or not.
+         * @param	maxLookahead  The maximum number of items to look for a equal line if the rows don't match.
+         * @returns	Returns the list of differences.
          */
         diff<TOther>(right: Array<TOther>, isEqual?: (leftValue: T, rightValue: TOther, leftIndex: number, rightIndex: number) => boolean, maxLookahead?: number): [T, TOther, number, number][];
     }

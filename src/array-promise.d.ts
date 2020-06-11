@@ -18,9 +18,9 @@ declare global {
          * If the concurrency value is -1, will start all sub-promises at the same time.
          *
          * @method mapConcurrent
-         * @param  {Function} callback         The async handler to call to process a single item.
-         * @param  {Number}   [concurrency=10] The number of promises to start at a time.
-         * @return {Promise}                   A promise that when fully resolved will return the
+         * @param	callback         The async handler to call to process a single item.
+         * @param	[concurrency=10] The number of promises to start at a time.
+         * @returns	A promise that when fully resolved will return the
          *                                     list of items that were returned from each async
          *                                     handler call.
          */
@@ -32,8 +32,8 @@ declare global {
          * resolve.
          *
          * @method mapPromise
-         * @param  {Function} callback  The async handler to call for each item.
-         * @return {Promise}            A promise that will resolve once all items have been processed
+         * @param	callback  The async handler to call for each item.
+         * @returns	A promise that will resolve once all items have been processed
          *                              by the async callback. The result is the array of results from
          *                              each asynch callback.
          */
@@ -54,9 +54,9 @@ declare global {
          * If the concurrency value is -1, will start all sub-promises at the same time.
          *
          * @method forEachConcurrent
-         * @param  {Function} callback         The async handler to call to process a single item.
-         * @param  {Number}   [concurrency=10] The number of promises to start at a time.
-         * @return {Promise}                   A promise that will only resolve once all child promises are also
+         * @param	callback         The async handler to call to process a single item.
+         * @param	[concurrency=10] The number of promises to start at a time.
+         * @returns	A promise that will only resolve once all child promises are also
          *                                     resolved.
          */
         forEachConcurrent(callback: ItemCallback<T, Promise<void>>, concurrency?: number): Promise<void>;
@@ -69,8 +69,8 @@ declare global {
          * resolve.
          *
          * @method forEachPromise
-         * @param  {Function} callback  The async handler to call for each item.
-         * @return {Promise}            A promise that will only resolve once all child promises are also
+         * @param	callback  The async handler to call for each item.
+         * @returns	A promise that will only resolve once all child promises are also
          *                              resolved.
          */
          forEachPromise(callback: ItemCallback<T, Promise<void>>): Promise<void>;

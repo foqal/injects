@@ -27,11 +27,11 @@ declare global {
         *
         * `[{id, name}]` to `{id: {id, name}}`
         * @method toIdMap
-        * @param {Object[]}        this    The list of items to convert.
-        * @param {String|Func}     key     The name of the id field to fetch from or a function
+        * @param  this    The list of items to convert.
+        * @param  key     The name of the id field to fetch from or a function
         *                                  to extract the key from the current item.
-        * @param {String|Func}     value   The optional field or function to extract as the value of the map.
-        * @returns {Object}                The map keyed by id.
+        * @param  value   The optional field or function to extract as the value of the map.
+        * @returns	The map keyed by id.
         */
         toIdMap(key?: NullableValueAssigner<T, string>): Record<string, T>;
         toIdMap<K extends keyof T>(key: NullableValueAssigner<T, string> | undefined | null, value: K): Record<string, T[K]>;
@@ -43,11 +43,11 @@ declare global {
         *
         * `[{id, name1}, {id, name2}]` to `{id: [{id, name1}, {id, name2}]}`
         * @name groupBy
-        * @param {Object[]}        this    The list to group
-        * @param {String|Func}     key     The name of the id field to fetch from or a function
+        * @param  this    The list to group
+        * @param  key     The name of the id field to fetch from or a function
         *                                  to extract the key from the current item.
-        * @param {String|Func}     value   The optional field or function to extract as the value of the array of the map.
-        * @returns {Object}                The map having the given key as the id and the value being an array of extracted values.
+        * @param  value   The optional field or function to extract as the value of the array of the map.
+        * @returns	The map having the given key as the id and the value being an array of extracted values.
         */
         groupBy(key?: NullableValueAssigner<T, string>): Record<string, T[]>;
         groupBy<K extends keyof T>(key: NullableValueAssigner<T, string> | undefined | null, value: K): Record<string, T[K][]>;
@@ -59,10 +59,10 @@ declare global {
         *
         * `[{id: "a", name1}, {id: "a", name2}]` to `{"a": 2}`
         * @name distribution
-        * @param {Object[]}        this    The list to count distribution
-        * @param {String|Func}     key     The name of the id field to fetch from or a function
-        *                                  to extract the key from the current item.
-        * @returns {Object}                The map having the given key as the id and the value being the count of times this value appears.
+        * @param  this    The list to count distribution
+        * @param  key     The name of the id field to fetch from or a function
+        *                 to extract the key from the current item.
+        * @returns	The map having the given key as the id and the value being the count of times this value appears.
         */
         distribution(key?: NullableValueAssigner<T, string>): Record<string, number>;
 
@@ -72,9 +72,9 @@ declare global {
         *
         * `[{id: 1}, {id: 2}]` to `[1, 2]`
         * @method toIdList
-        * @param {Object[]}    this    The list of items to convert.
-        * @param {String}      key     The name of the id field to fetch for each item.
-        * @returns {Object[]}          The list of ids.
+        * @param  this    The list of items to convert.
+        * @param  key     The name of the id field to fetch for each item.
+        * @returns	The list of ids.
         */
         toIdList(): (T extends {id: infer T} ? T : undefined)[];
         toIdList<K extends keyof T>(key: K): T[K][];
@@ -84,8 +84,8 @@ declare global {
         * Creates an array of the indexes of items in the list.
         *
         * @method toIndexList
-        * @param {Object[]}    this    The list of items to convert.
-        * @returns {Object[]}          The list of indexes.
+        * @param  this    The list of items to convert.
+        * @returns	The list of indexes.
         */
         toIndexList(): number[];
 
@@ -93,11 +93,11 @@ declare global {
         * Dedupes the current list using an array.
         *
         * @method dedupe
-        * @param {Object[]}    this        The list of items to dedupe
-        * @param {Func}        extractor   The optional method to use to extract the values that will be compared.
-        * @param {Func}        combiner    When a duplicate is found, this method is called to determine the resulting value to keep.
+        * @param  this        The list of items to dedupe
+        * @param  extractor   The optional method to use to extract the values that will be compared.
+        * @param  combiner    When a duplicate is found, this method is called to determine the resulting value to keep.
         *                                  If method not provided, will keep the first value found.
-        * @return {Object[]}               The de-duplicated subset.
+        * @returns	The de-duplicated subset.
         */
         dedupe(extractor?: NullableValueAssigner<T, string>): T[];
         dedupe<TResult>(extractor?: (item: T) => string, combiner?: (left: T, right: T) => TResult): TResult[];
@@ -108,8 +108,8 @@ declare global {
         * Takes an array such as `[[1, 2, 3], [4, 5, 6]]` and returns `[1, 2, 3, 4, 5, 6]`.
         *
         * @method flatten
-        * @param {Object[][]} this The list of lists to flatten
-        * @return {Object[]} The flattened list
+        * @param  this The list of lists to flatten
+        * @returns	The flattened list
         */
         flatten(): T extends (infer A)[] ? A[] : T[];
 
@@ -118,9 +118,9 @@ declare global {
         * array of arrays into a single array.
         *
         * @method flatMap
-        * @param {Object[]} this The list to manipulate.
-        * @param {Func} handler The method to apply to each item in the list.
-        * @return {Object[]} The flattened list
+        * @param  this The list to manipulate.
+        * @param  handler The method to apply to each item in the list.
+        * @returns	The flattened list
         */
         flatMap<TResult>(handler: (item: T) => TResult[]): TResult[];
 
@@ -129,20 +129,20 @@ declare global {
         * This is like the forEach method, but this one returns the original list.
         *
         * @method forEachReturned
-        * @param {Object[]} this The list to manipulate.
-        * @param {Func} handler The method to apply to each item in the list.
-        * @return {Object[]} The mapped list.
+        * @param  this The list to manipulate.
+        * @param  handler The method to apply to each item in the list.
+        * @return The mapped list.
         */
-        forEachReturned(handler: (item: T) => T): T[];
+        forEachReturned(handler: (item: T) => void): T[];
 
         /**
         * Performs a forEach operation for a subset of the list starting with the given "start"
         * index and continuing for the given length.
         *
         * @method offsetMap
-        * @param  {Number}     start       The index of where to start the map operation.
-        * @param  {Number}     length      The number of items to map.
-        * @param  {Function}   handler     The handler that will be called with each item in the map.
+        * @param	start       The index of where to start the map operation.
+        * @param	length      The number of items to map.
+        * @param	handler     The handler that will be called with each item in the map.
         */
         offsetForEach(start: number | null, length: number | null, handler: (item: T) => T): void;
 
@@ -151,11 +151,11 @@ declare global {
         * index and continuing for the given length. Returns the processed sublist.
         *
         * @method offsetMap
-        * @param  {Number}     start       The index of where to start the map operation.
-        * @param  {Number}     length      The number of items to map.
-        * @param  {Function}   handler     The handler that will be called with each item in the map.
+        * @param	start       The index of where to start the map operation.
+        * @param	length      The number of items to map.
+        * @param	handler     The handler that will be called with each item in the map.
         *                               Each item returned by the handler will be returned in the resulting map.
-        * @return {Array}                  The processed sublist of size (length - start) with the processed sub list.
+        * @returns	The processed sublist of size (length - start) with the processed sub list.
         */
         offsetMap<TResult>(start: number | null, length: number | null, handler: NullableValueAssigner<T, TResult>): TResult[];
 
@@ -166,10 +166,10 @@ declare global {
         * If no filter present, will filter out items which are not falsy.
         *
         * @method filterMap
-        * @param {Object[]}    this        The list to manipulate.
-        * @param {Func}        handler     The method to apply to each item in the list.
-        * @param {Func}        filter      The optional method to check. Default checks for null item.
-        * @return {Object[]} The mapped list.
+        * @param  this        The list to manipulate.
+        * @param  handler     The method to apply to each item in the list.
+        * @param  filter      The optional method to check. Default checks for null item.
+        * @returns	The mapped list.
         */
         filterMap<TResult = T>(mapper: NullableValueAssigner<Exclude<T, undefined | null>, TResult>): TResult[];
         filterMap<TResult = T>(mapper: NullableValueAssigner<T, TResult>, filter: NullableValueAssigner<T, boolean>): TResult[];
@@ -181,10 +181,10 @@ declare global {
         * If no filter present, will filter out items which are not falsy.
         *
         * @method mapFilter
-        * @param {Object[]}    this        The list to iterate
-        * @param {Func}        handler     The method to apply to each item in the list.
-        * @param {Func}        filter      The optional method to check. Default checks for null item.
-        * @return {Object[]} The mapped list.
+        * @param  this        The list to iterate
+        * @param  handler     The method to apply to each item in the list.
+        * @param  filter      The optional method to check. Default checks for null item.
+        * @returns	The mapped list.
         */
         mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>): Exclude<TResult, undefined | null>[];
         mapFilter<TResult = T>(mapper: NullableValueAssigner<T, TResult>, filter: NullableValueAssigner<TResult, boolean>): TResult[];
@@ -194,16 +194,16 @@ declare global {
         /**
         * Removes all elements that evaluate to falsy such as null, false, 0, etc
         * @method filterFalsy
-        * @param {Object[]}    this        The list to filter from
-        * @return {Object[]} The filtered list
+        * @param  this        The list to filter from
+        * @returns	The filtered list
         */
         filterFalsy(): Exclude<T, undefined | null | false | 0 | "">[];
 
         /**
         * Removes all null elements
         * @method filterNull
-        * @param {Object[]}    this        The list to filter from
-        * @return {Object[]} The filtered list
+        * @param  this        The list to filter from
+        * @returns	The filtered list
         */
         filterNull(): Exclude<T, undefined | null>[];
 
@@ -214,9 +214,9 @@ declare global {
         * Takes the first items from the list based on the count provided
         *
         * @method limit
-        * @param {Object[]}    this    The list to manipulate.
-        * @param {Integer}        count   The number of items to return
-        * @return {Object[]}           The subset list.
+        * @param  this    The list to manipulate.
+        * @param  count   The number of items to return
+        * @returns	The subset list.
         */
         limit(count: number): T[];
 
@@ -224,9 +224,9 @@ declare global {
         * Takes the last items from the list based on the count provided
         *
         * @method last
-        * @param {Object[]}       this    The list to manipulate.
-        * @param {Integer}        count   The number of items to return
-        * @return {Object[]}              The subset list.
+        * @param  this    The list to manipulate.
+        * @param  count   The number of items to return
+        * @returns	The subset list.
         */
         last(count: number): T[];
 
@@ -234,9 +234,9 @@ declare global {
         * Skips the given number of elemens and returns the rest of the list.
         *
         * @method skip
-        * @param {Object[]}    this    The list to manipulate.
-        * @param {Integer}        count   The number of items to skip
-        * @return {Object[]}           The subset list.
+        * @param  this    The list to manipulate.
+        * @param  count   The number of items to skip
+        * @returns	The subset list.
         */
         skip(index: number): T[];
 
@@ -244,9 +244,9 @@ declare global {
         * Finds the first element from the right given a specific predicate.
         *
         * @method findRight
-        * @param {Object[]}    this        The list to iterate.
-        * @param {Func}        predicate   Function to execute on each value in the array.
-        * @return {Object}               The found element.
+        * @param  this        The list to iterate.
+        * @param  predicate   Function to execute on each value in the array.
+        * @returns	The found element.
         */
         findRight(predicate: ItemCallback<T, boolean>): T;
 
@@ -254,9 +254,9 @@ declare global {
         * Finds the first element's index from the right given a specific predicate.
         *
         * @method findIndexRight
-        * @param {Object[]}    this        The list to iterate.
-        * @param {Func}        predicate   Function to execute on each value in the array.
-        * @return {Integer}                The found element's index
+        * @param  this        The list to iterate.
+        * @param  predicate   Function to execute on each value in the array.
+        * @returns	The found element's index
         */
         findIndexRight(predicate: ItemCallback<T, boolean>): number;
 
@@ -285,10 +285,10 @@ declare global {
         * Returns a list of items that appear in both this list and the passed in list.
         *
         * @method union
-        * @param {Object[]}    this        The list to manipulate.
-        * @param {Object[]}    other       The list of entites to union with.
-        * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
-        * @return {Object[]}               The subset list.
+        * @param  this        The list to manipulate.
+        * @param  other       The list of entites to union with.
+        * @param  extractor   The optional method or string to use to extract the values that will be compared.
+        * @returns	The subset list.
         */
         union<TOther, TResult>(other: TOther[], extractor?: NullableKeyValueAssigner<T & TOther, T | TOther, TResult>): T[];
 
@@ -296,10 +296,10 @@ declare global {
         * Retuns the list of items that are not in the passed in list.
         *
         * @method exclude
-        * @param {Object[]}    this        The list to manipulate.
-        * @param {Object[]}    exclude     The list of entites to exclude.
-        * @param {Func|String} extractor   The optional method or string to use to extract the values that will be compared.
-        * @return {Object[]}               The subset list.
+        * @param  this        The list to manipulate.
+        * @param  exclude     The list of entites to exclude.
+        * @param  extractor   The optional method or string to use to extract the values that will be compared.
+        * @returns	The subset list.
         */
         exclude<TOther, TResult>(exclude: TOther[], extractor?: NullableKeyValueAssigner<T & TOther, T | TOther, TResult>): T[];
 
@@ -315,9 +315,9 @@ declare global {
         *    direction specifies the sort order using the SortDirection values. (1 or -1)
         *
         * @method sortBy
-        * @param {Object[]}            this        The list to sort.
-        * @param {String|Func|Object}  ...keys     The list containing the key to sort by. See description for more detail,
-        * @return {Object[]}                       The sorted list.
+        * @param  this        The list to sort.
+        * @param  ...keys     The list containing the key to sort by. See description for more detail,
+        * @returns	The sorted list.
         */
         sortBy<TResult>(...keys: SortKey<T, TResult>[]): T[];
 
@@ -331,9 +331,9 @@ declare global {
         *    direction specifies the sort order using the SortDirection values. (1 or -1)
         *
         * @method sortByDescending
-        * @param {Object[]}            this        The list to sort.
-        * @param {String|Func|Object}  ...keys     The list containing the key to sort by. See description for more detail,
-        * @return {Object[]}                       The sorted list.
+        * @param  this        The list to sort.
+        * @param  ...keys     The list containing the key to sort by. See description for more detail,
+        * @returns	The sorted list.
         */
         sortByDescending<TResult>(...keys: SortKey<T, TResult>[]): T[];
 
@@ -342,8 +342,8 @@ declare global {
         * Creates a shallow copy of this array. If an extractor is provided, will only
         * returned the extracted items. (Performs a basic map operation).
         * @method copy
-        * @param  {Function} extractor The optional handler to call on each item.
-        * @return {Array}              The copied list.
+        * @param	extractor The optional handler to call on each item.
+        * @returns	The copied list.
         */
         copy<TResult>(extractor?: ItemCallback<T, TResult>): TResult[];
 
@@ -353,8 +353,8 @@ declare global {
         * for a deep equals operator to work.
         *
         * @method equals
-        * @param  {Array} other        The array to compare with this current array.
-        * @return {Boolean}              Wether the arrays are equal or not.
+        * @param	other        The array to compare with this current array.
+        * @returns	Wether the arrays are equal or not.
         */
         equals(other: T[]): boolean;
     }
