@@ -42,21 +42,42 @@ function shouldSetup(installedVersion, currentVersion) {
     }
 }
 
+function makeInjectedPrototypeMethodsNonEnumerable() {
+    [Array.prototype, String.prototype].forEach(proto => {
+        Object.getOwnPropertyNames(proto).forEach(name => {
+            const descriptor = Object.getOwnPropertyDescriptor(proto, name);
+            if (!descriptor || !descriptor.enumerable) {
+                return;
+            }
+            if (typeof descriptor.value !== "function" && typeof descriptor.get !== "function") {
+                return;
+            }
+            Object.defineProperty(proto, name, Object.assign({}, descriptor, {enumerable: false}));
+        });
+    });
+}
+
 function setup(installed, current) {
 
-    if (!shouldSetup(installed, current)) {
-        return;
+    const exportObj = {setup, shouldSetup};
+
+    if (shouldSetup(installed, current)) {
+        require('./array-properties');
+        const arrayIterators = require('./array-iterators');
+        exportObj.SortDirection = arrayIterators.SortDirection;
+        require('./array-math');
+        require('./array-promise');
+        require('./array-diffs');
+        require('./string');
+        require('./date');
     }
 
-    const exportObj = {setup, shouldSetup};
-    require('./array-properties');
-    const arrayIterators = require('./array-iterators');
-    exportObj.SortDirection = arrayIterators.SortDirection;
-    require('./array-math');
-    require('./array-promise');
-    require('./array-diffs');
-    require('./string');
-    require('./date');
+    // Plain `Prototype.foo = fn` assignments are enumerable by default. AWS SDK DynamoDB Document
+    // codecs walk arrays with `for...in` and then structuredClone values — enumerable injects methods
+    // show up as functions and throw DataCloneError. Keep them non-enumerable like native methods.
+    // Run even when setup was skipped so an already-installed older inject still gets corrected.
+    makeInjectedPrototypeMethodsNonEnumerable();
+
     return exportObj;
 }
 
